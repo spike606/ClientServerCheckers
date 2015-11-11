@@ -115,7 +115,7 @@ public class Game {
 		boardData.makeMove(checkerMove);
 		
 		//if second beating
-		if (checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen()) {
+		if ((checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen()) || checkerMove.isBeatingPerformedByQueen()) {
 			possibleMoves = boardData.getPossibleSecondBeating(currentPlayer,
 					checkerMove.getMoveToRow(), checkerMove.getMoveToCol());
 			if (possibleMoves != null) {
@@ -131,6 +131,7 @@ public class Game {
 			}
 		}
 		checkerMove.setMovePerformedByQueen(false);
+		checkerMove.setBeatingPerformedByQueen(false);
 
 		//change player
 		

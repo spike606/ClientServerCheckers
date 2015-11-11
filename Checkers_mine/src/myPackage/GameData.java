@@ -59,14 +59,16 @@ public class GameData {
 		// makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
 
 		// check queen move, it is beating?
-		if (move.isQueensMove()) {
-			move.setMovePerformedByQueen(true);//set flag to know if move is performed by queen
-			//it prevends to make 2 moves (when first is not a beating and second may be)
+		if(board[move.getMoveFromRow()][move.getMoveFromCol()] == BLACK_QUEEN ||
+				board[move.getMoveFromRow()][move.getMoveFromCol()] == WHITE_QUEEN){
 			removeOpponentCheckerIfBeating(move);
 			moveChecker(move);
-
 		}
-		// check if beats
+//		if (move.isQueensMove()) {
+//
+//
+//		}
+		// check if normal checkers beats
 		else if (move.isMoveBeating()) {
 			removeOpponentChecker(move);
 			moveChecker(move);
@@ -77,7 +79,7 @@ public class GameData {
 
 	}
 
-	private void removeOpponentCheckerIfBeating(CheckersMove move) {
+	private void removeOpponentCheckerIfBeating(CheckersMove move) {//checks queen move and remove checker if it is beating
 		int opponentCheckerRow = 0;
 		int opponentCheckerCol = 0;
 
@@ -95,7 +97,7 @@ public class GameData {
 				System.out.println(checkCol);
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
-
+					move.setBeatingPerformedByQueen(true);
 					break;
 				}
 			}
@@ -108,6 +110,7 @@ public class GameData {
 				System.out.println(checkCol);
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
+					move.setBeatingPerformedByQueen(true);
 
 					break;
 				}
@@ -121,6 +124,7 @@ public class GameData {
 				System.out.println(checkCol);
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
+					move.setBeatingPerformedByQueen(true);
 
 					break;
 				}
@@ -135,6 +139,7 @@ public class GameData {
 				System.out.println(checkCol);
 				System.out.println(checkCol);
 				if (board[checkRow][checkCol] != EMPTY) {
+					move.setBeatingPerformedByQueen(true);
 
 					break;
 				}
@@ -148,6 +153,17 @@ public class GameData {
 		opponentCheckerRow = checkRow;
 
 		board[opponentCheckerRow][opponentCheckerCol] = EMPTY;
+		// set flag to know if move is
+		// performed by queen
+		// it prevends to make 2 moves (when first is not a beating and
+		// second may be)
+		if (move.isBeatingPerformedByQueen() == false) {
+			move.setMovePerformedByQueen(true);
+			// if not beating then
+		}
+		// queen is just moving,
+		// so it cant make
+		// another beating
 	}
 
 	private void checkIfNewQueen(CheckersMove move) {
