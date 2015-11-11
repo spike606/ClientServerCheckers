@@ -2,7 +2,6 @@ package myPackage;
 
 import java.util.ArrayList;
 
-import javax.rmi.ssl.SslRMIClientSocketFactory;
 
 import myPackage.CheckersMove;
 
@@ -13,18 +12,17 @@ public class GameData {
 
 	// figures on the board
 	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
-	static private int[][] board = new int[8][8];
+	static private int[][] board = new int[8][8];// array of current board state
 
 	public GameData() {
 
 		setElementsOnStart();
-		/*
-		 * for (int row = 0; row < 8; row++) { for (int col = 0; col < 8; col++)
-		 * { System.out.print(board[row][col]); } System.out.println(); }
-		 */
 
 	}
 
+	/*
+	 * Set up board on start
+	 */
 	public void setElementsOnStart() {
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
@@ -46,34 +44,28 @@ public class GameData {
 	public int getFieldOnBoard(int row, int col) {
 		return board[row][col];
 	}
-	// set selected checker on selected field
-	// public void setPawnOnField(int row, int col, int checker){
-	// board[row][col] = checker;
-	// }NIE WIADOMO CZY POTRZEBNE
 
-	/**
-	 * Make the move. It is assumed that move is non-null and that the move it
-	 * represents is legal.
+	/*
+	 * Make the move, move is not null and is legal.
 	 */
 	public void makeMove(CheckersMove move) {
-		// makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
 
-		// check queen move, it is beating?
+		/*
+		 * If move is performed by queen
+		 */
 		if (board[move.getMoveFromRow()][move.getMoveFromCol()] == BLACK_QUEEN
 				|| board[move.getMoveFromRow()][move.getMoveFromCol()] == WHITE_QUEEN) {
 			removeOpponentCheckerIfBeating(move);
 			moveChecker(move);
 		}
-		// if (move.isQueensMove()) {
-		//
-		//
-		// }
-		// check if normal checkers beats
-		else if (move.isMoveBeating()) {
+		/*
+		 * If move is performed by normal checker
+		 */
+		else if (move.isMoveBeating()) {// checker beats
 			removeOpponentChecker(move);
 			moveChecker(move);
 		} else
-			moveChecker(move);
+			moveChecker(move);// checker just moves
 
 		checkIfNewQueen(move);
 
@@ -86,24 +78,26 @@ public class GameData {
 																	// checker
 																	// if it is
 																	// beating
-		int opponentCheckerRow = 0;
+		int opponentCheckerRow = 0;// Coordinates of possible opponent checker
 		int opponentCheckerCol = 0;
 
-		int checkRow = move.getMoveFromRow();
+		int checkRow = move.getMoveFromRow();// start checking from queen
+												// location
 		int checkCol = move.getMoveFromCol();
 
-		System.out.println("first" + checkCol);
-		System.out.println("second" + checkRow);
+		/*
+		 * Start looking for opponent checker in 4 possible directions
+		 */
 		if (move.getMoveFromRow() < move.getMoveToRow() && move.getMoveFromCol() < move.getMoveToCol()) {
 
 			while (checkCol < move.getMoveToCol() && checkRow < move.getMoveToRow()) {
-				System.out.println("1loop");
 				checkCol++;
 				checkRow++;
-				System.out.println(checkCol);
-				System.out.println(checkRow);
+
 				if (board[checkRow][checkCol] != EMPTY) {
-					move.setBeatingPerformedByQueen(true);
+					move.setBeatingPerformedByQueen(true);// set flags - beating
+															// true, just move -
+															// false
 					move.setMovePerformedByQueen(false);
 
 					break;
@@ -112,11 +106,9 @@ public class GameData {
 
 		} else if (move.getMoveFromRow() < move.getMoveToRow() && move.getMoveFromCol() > move.getMoveToCol()) {
 			while (checkCol > move.getMoveToCol() && checkRow < move.getMoveToRow()) {
-				System.out.println("2loop");
 				checkCol--;
 				checkRow++;
-				System.out.println(checkCol);
-				System.out.println(checkRow);
+
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
 					move.setMovePerformedByQueen(false);
@@ -127,11 +119,9 @@ public class GameData {
 
 		} else if (move.getMoveFromRow() > move.getMoveToRow() && move.getMoveFromCol() < move.getMoveToCol()) {
 			while (checkCol < move.getMoveToCol() && checkRow > move.getMoveToRow()) {
-				System.out.println("3loop");
 				checkCol++;
 				checkRow--;
-				System.out.println(checkCol);
-				System.out.println(checkRow);
+
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
 					move.setMovePerformedByQueen(false);
@@ -142,12 +132,10 @@ public class GameData {
 
 		} else if (move.getMoveFromRow() > move.getMoveToRow() && move.getMoveFromCol() > move.getMoveToCol()) {
 			while (checkCol > move.getMoveToCol() && checkRow > move.getMoveToRow()) {
-				System.out.println("4loop");
 
 				checkCol--;
 				checkRow--;
-				System.out.println(checkCol);
-				System.out.println(checkCol);
+
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
 					move.setMovePerformedByQueen(false);
@@ -157,52 +145,52 @@ public class GameData {
 			}
 
 		}
-		System.out.println(checkCol);
-		System.out.println(checkRow);
 
 		opponentCheckerCol = checkCol;
 		opponentCheckerRow = checkRow;
 
-		board[opponentCheckerRow][opponentCheckerCol] = EMPTY;
-		// set flag to know if move is
-		// performed by queen
-		// it prevends to make 2 moves (when first is not a beating and
-		// second may be)
+		board[opponentCheckerRow][opponentCheckerCol] = EMPTY;// remove opponent
+																// checker
+
 		if (move.isBeatingPerformedByQueen() == false) {
 			move.setMovePerformedByQueen(true);
-			// if not beating then
+			// if not beating then queen is just moving, so it can't make
+			// another beating
 		}
-		// queen is just moving,
-		// so it cant make
-		// another beating
+
 	}
 
+	/*
+	 * Creates new queen
+	 */
 	private void checkIfNewQueen(CheckersMove move) {
 		if (move.getMoveToRow() == 0 && board[move.getMoveToRow()][move.getMoveToCol()] == WHITE) {
 			move.setMovePerformedByQueen(true);// to prevent beating by new
-												// queen immideiatly
+												// queen
 			board[move.getMoveToRow()][move.getMoveToCol()] = WHITE_QUEEN;
 
 		}
 		if (move.getMoveToRow() == 7 && board[move.getMoveToRow()][move.getMoveToCol()] == BLACK) {
 			move.setMovePerformedByQueen(true);// to prevent beating by new
-												// queen immideiatly
+												// queen
 			board[move.getMoveToRow()][move.getMoveToCol()] = BLACK_QUEEN;
 
 		}
 	}
 
+	/*
+	 * Make standard move in game data
+	 */
 	private void moveChecker(CheckersMove move) {
 		board[move.getMoveToRow()][move.getMoveToCol()] = board[move.getMoveFromRow()][move.getMoveFromCol()];
 		board[move.getMoveFromRow()][move.getMoveFromCol()] = EMPTY;
 	}
 
+	/*
+	 * When beating is performed Remove beaten checker from the board
+	 */
 	private void removeOpponentChecker(CheckersMove move) {
-		// Remove beaten checker from the board
-		// int opponentCheckerRow = (move.getMoveFromRow() +
-		// move.getMoveToRow()) / 2;
-		// int opponentCheckerCol = (move.getMoveFromCol() +
-		// move.getMoveToCol()) / 2;
+
 		int opponentCheckerRow = 0;
 		int opponentCheckerCol = 0;
 
@@ -219,19 +207,20 @@ public class GameData {
 			opponentCheckerRow = move.getMoveToRow() + 1;
 			opponentCheckerCol = move.getMoveToCol() + 1;
 		}
-		System.out.println(opponentCheckerRow);
-		System.out.println(opponentCheckerCol);
 
 		board[opponentCheckerRow][opponentCheckerCol] = EMPTY;
 
 	}
 
+	/*
+	 * Make an array containing possible moves
+	 */
 	public CheckersMove[] getPossibleMovesForPlayer(int player) {
 
 		if (player != WHITE && player != BLACK)
 			return null;
 
-		int playerQueen; // The constant representing a King belonging to
+		int playerQueen; // The constant representing a queen belonging to
 							// player.
 		if (player == WHITE)
 			playerQueen = WHITE_QUEEN;
@@ -258,12 +247,6 @@ public class GameData {
 			CheckersMove[] arrayOfPossibleMoves = new CheckersMove[moves.size()];
 			for (int i = 0; i < moves.size(); i++) {
 				arrayOfPossibleMoves[i] = moves.get(i);
-				// System.out.println("From " +
-				// arrayOfPossibleMoves[i].getMoveFromCol() + " " +
-				// arrayOfPossibleMoves[i].getMoveFromRow()
-				// + " to " + arrayOfPossibleMoves[i].getMoveToCol() + " " +
-				// arrayOfPossibleMoves[i].getMoveToRow());
-
 			}
 			return arrayOfPossibleMoves;
 
@@ -271,6 +254,9 @@ public class GameData {
 
 	}
 
+	/*
+	 * Because no beating is possible search for regular moves
+	 */
 	private void checkPossibleRegularMoves(ArrayList<CheckersMove> moves, int player, int playerQueen) {
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
@@ -288,28 +274,25 @@ public class GameData {
 				} // check for possible moves if it is queen checker
 				else if (board[row][col] == playerQueen) {
 					canQueenMove(moves, player, row, col);
-					System.out.println("queen van move");
 				}
 			}
 		}
 	}
 
+	/*
+	 * Find regular moves for queen in 4 directions
+	 */
 	private void canQueenMove(ArrayList<CheckersMove> moves, int player, int rowFrom, int colFrom) {
 
-		int rowToCheck = rowFrom;
+		int rowToCheck = rowFrom;// start from queen position
 		int colToCheck = colFrom;
-		System.out.println("wartosci poczatkowe:");
-		System.out.println(rowToCheck);
-		System.out.println(colToCheck);
+
 		// check for white or black player
 		if (player == WHITE) {
 
-			// 1 direction
+			// first direction - from lower right corner to upper left corner
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move1");
 					break;
 				}
 				moves.add(new CheckersMove(rowFrom, colFrom, rowToCheck, colToCheck));
@@ -317,12 +300,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 2 direction
+			// second direction - from lower left corner to upper right corner
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move2");
 
 					break;
 				}
@@ -331,12 +312,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 3 direction
+			// third direction - from upper right corner to lower left corner
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move3");
 
 					break;
 				}
@@ -345,12 +324,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 4 direction
+			// fourth direction - from upper left corner to lower right corner
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move4");
 
 					break;
 				}
@@ -359,12 +336,10 @@ public class GameData {
 			}
 
 		} else {
-			// 1 direction
+			// first direction - from lower right corner to upper left corner
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move5");
 
 					break;
 				}
@@ -373,12 +348,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 2 direction
+			// second direction - from lower left corner to upper right corner
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move6");
 
 					break;
 				}
@@ -387,12 +360,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 3 direction
+			// third direction - from upper right corner to lower left corner
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move7");
 
 					break;
 				}
@@ -401,12 +372,10 @@ public class GameData {
 			}
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
-			// 4 direction
+			// fourth direction - from upper left corner to lower right corner
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
-				System.out.println(rowToCheck);
-				System.out.println(colToCheck);
+
 				if (board[rowToCheck][colToCheck] != EMPTY) {
-					System.out.println("move8");
 
 					break;
 				}
@@ -418,6 +387,9 @@ public class GameData {
 
 	}
 
+	/*
+	 * Find regular moves for normal checkers - 1 field each direction
+	 */
 	private boolean canMove(int player, int rowFrom, int colFrom, int rowTo, int colTo) {
 		// out of board
 		if (colTo > 7 || colTo < 0 || rowTo > 7 || rowTo < 0)
@@ -439,6 +411,9 @@ public class GameData {
 		}
 	}
 
+	/*
+	 * Find possible beating moves
+	 */
 	private void checkPossibleBeating(ArrayList<CheckersMove> moves, int player, int playerQueen) {
 		for (int row = 0; row < 8; row++) {
 			for (int col = 0; col < 8; col++) {
@@ -456,7 +431,6 @@ public class GameData {
 				} // check for possible beating if it is queen checker
 				else if (board[row][col] == playerQueen) {
 					canQueenBeat(moves, player, row, col);
-					System.out.println("queen can beat");
 				}
 
 			}
@@ -464,6 +438,10 @@ public class GameData {
 		}
 	}
 
+	/*
+	 * Find possible beating moves for queen in 4 directions, any number of
+	 * fields
+	 */
 	private void canQueenBeat(ArrayList<CheckersMove> moves, int player, int rowFrom, int colFrom) {
 
 		int rowToCheck = rowFrom;
@@ -473,8 +451,9 @@ public class GameData {
 		// check for white or black player
 		if (player == WHITE) {
 
-			// 1 direction
+			// first direction - from lower right corner to upper left corner
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
+				// when find same checker stop searching
 				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
 				} else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
@@ -485,7 +464,8 @@ public class GameData {
 				} else if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					enemyCheckerFound = true;// found black checker
 				} else if (enemyCheckerFound == true && board[rowToCheck][colToCheck] == EMPTY) {
-					moves.add(new CheckersMove(rowFrom, colFrom, rowToCheck, colToCheck));
+					moves.add(new CheckersMove(rowFrom, colFrom, rowToCheck, colToCheck));// can
+																							// beat
 
 				}
 
@@ -493,7 +473,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 2 direction
+			// second direction - from lower left corner to upper right corner
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
 				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
@@ -513,7 +493,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 3 direction
+			// third direction - from upper right corner to lower left corner
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
 				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
@@ -533,7 +513,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 4 direction
+			// fourth direction - from upper left corner to lower right corner
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
 				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
@@ -555,8 +535,8 @@ public class GameData {
 
 			}
 
-		} else {
-			// 1 direction
+		} else {// when BLACK player
+			// first direction - from lower right corner to upper left corner
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
 				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
@@ -576,7 +556,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 2 direction
+			// second direction - from lower left corner to upper right corner
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
 				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
@@ -596,7 +576,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 3 direction
+			// third direction - from upper right corner to lower left corner
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
 				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
@@ -616,7 +596,7 @@ public class GameData {
 			rowToCheck = rowFrom;
 			colToCheck = colFrom;
 			enemyCheckerFound = false;
-			// 4 direction
+			// fourth direction - from upper left corner to lower right corner
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
 				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
@@ -637,7 +617,9 @@ public class GameData {
 		}
 	}
 
-	// check if checker can beat another checker
+	/*
+	 * Check if checker can beat another checker - only forward
+	 */
 	private boolean canBeat(int player, int rowFrom, int colFrom, int rowJumped, int colJumped, int rowTo, int colTo) {
 
 		// out of board
@@ -681,12 +663,15 @@ public class GameData {
 
 	}
 
+	/*
+	 * If beating was performed check if another beating is possible
+	 */
 	public CheckersMove[] getPossibleSecondBeating(int player, int rowFrom, int colFrom) {
 
 		if (player != WHITE && player != BLACK)
 			return null;
 
-		int playerQueen; // The constant representing a King belonging to
+		int playerQueen; // The constant representing a queen belonging to the
 							// player.
 		if (player == WHITE)
 			playerQueen = WHITE_QUEEN;
@@ -713,13 +698,15 @@ public class GameData {
 
 	}
 
+	/*
+	 * Check if second beating is possible for given coordinates
+	 */
 	private void checkPossibleSecondBeating(ArrayList<CheckersMove> moves, int player, int playerQueen, int row,
 			int col) {
 
 		if (board[row][col] == player) {// check for possible second beating
 										// for checker
 			// 4 directions
-			System.out.println("aaaaa");
 			if (canBeat(player, row, col, row + 1, col + 1, row + 2, col + 2))
 				moves.add(new CheckersMove(row, col, row + 2, col + 2));
 			if (canBeat(player, row, col, row - 1, col + 1, row - 2, col + 2))
@@ -730,7 +717,6 @@ public class GameData {
 				moves.add(new CheckersMove(row, col, row - 2, col - 2));
 		} // check for possible beating if it is queen checker
 		else if (board[row][col] == playerQueen) {
-			System.out.println("bbbb");
 			canQueenBeat(moves, player, row, col);
 		}
 

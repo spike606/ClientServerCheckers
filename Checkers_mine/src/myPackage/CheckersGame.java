@@ -14,22 +14,23 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
+/*
+ * Main class for the game. Rules:
+ * 1)White start a game
+ * 2)Beating is mandatory
+ * 3)Normal checker can't move back or beat to back
+ * 4)Queen can move any direction, any number of fields
+ * 5)Queen can be beaten by normal checker
+ */
+@SuppressWarnings("unused")
 public class CheckersGame {
 
 	private JPanel thePanel = new JPanel();
-	private JPanel thePanel2 = new JPanel();
-	static JButton startButton = new JButton("Start"); // Button to start a new game.
+	static JButton startButton = new JButton("Start"); // Button to start a new														// game.
 	static JButton stopButton = new JButton("Stop"); // Button to stop the game.
-	static JLabel  infoLabel = new JLabel("Start the game");//label to display messages
-	static GameData boardData;//data for checkers board
+	static JLabel infoLabel = new JLabel("Start the game");// label to display															// messages
+	static GameData boardData;// data 
 
-	
-	/*
-	 * BIALE NA DOLE, BICIE PRZYMUSOWE
-	 */
-	
-	
 	public static void main(String[] args) {
 
 		EventQueue.invokeLater(new Runnable() {
@@ -53,25 +54,17 @@ public class CheckersGame {
 	protected JPanel getThePanel() {
 		return thePanel;
 	}
-	
+
 	/**
 	 * Constructor creates the Board and view
 	 */
 	public CheckersGame() {
 
 		thePanel.setLayout(new GridBagLayout());
-		
-		
 
-		Game game = new Game();
-			
-		
-		
-		
-		BoardComponent boardComponent = new BoardComponent();//drawing board
-		
-		
-		
+		GameFlow game = new GameFlow();
+
+		BoardComponent boardComponent = new BoardComponent();// drawing board
 
 		Font font = new Font("Helvetica", Font.PLAIN, 18);
 		infoLabel.setFont(font);
@@ -88,8 +81,7 @@ public class CheckersGame {
 	}
 
 	// Sets the rules for a component destined for a GridBagLayout
-	// and then adds it
-
+	// and then add it
 	private void addComp(JPanel thePanel, JComponent comp, int xPos, int yPos, int compWidth, int compHeight, int place,
 			int stretch) {
 
@@ -101,7 +93,7 @@ public class CheckersGame {
 		gridConstraints.gridheight = compHeight;
 		gridConstraints.weightx = 50;
 		gridConstraints.weighty = 50;
-		gridConstraints.insets = new Insets(0, 20, 25, 20);//top,left,bottom,right
+		gridConstraints.insets = new Insets(0, 20, 25, 20);// top,left,bottom,right
 		gridConstraints.anchor = place;
 		gridConstraints.fill = stretch;
 

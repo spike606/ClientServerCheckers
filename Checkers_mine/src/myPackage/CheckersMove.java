@@ -1,16 +1,23 @@
 package myPackage;
 
+/*
+ * Class which represent move in the game (checker and queen)
+ */
 public class CheckersMove {
 
-	//class which represent move in the game
-	
-	
-	private int moveFromRow, moveFromCol; // coordinates of the checker to be moved 
-	private int moveToRow, moveToCol; // coordinates where the checker will be moved
-	private boolean movePerformedByQueen = false;
-	private boolean beatingPerformedByQueen = false;
+	private int moveFromRow, moveFromCol; // coordinates of the checker to be
+											// moved
+	private int moveToRow, moveToCol; // coordinates where the checker will be
+										// moved
+	/*
+	 * flags prevents to make 2 moves (when first is not a beating and second
+	 * may be)
+	 */
+	private boolean movePerformedByQueen = false;// flag to know when queen only
+													// moves
+	private boolean beatingPerformedByQueen = false;// flag to know when queen
+													// beats opponent checker
 
-	
 	public boolean isBeatingPerformedByQueen() {
 		return beatingPerformedByQueen;
 	}
@@ -26,7 +33,7 @@ public class CheckersMove {
 		this.moveToRow = moveToRow;
 		this.moveToCol = moveToCol;
 	}
-	
+
 	public boolean isMovePerformedByQueen() {
 		return movePerformedByQueen;
 	}
@@ -35,18 +42,10 @@ public class CheckersMove {
 		this.movePerformedByQueen = movePerformedByQueen;
 	}
 
-	public boolean isMoveBeating() {
-		//if current move is beating return true
-		//return (fromRow - toRow == 2 || fromRow - toRow == -2); ORG
+	public boolean isMoveBeating() {// if standard checker makes a jump return
+									// true
 		return (moveFromCol - moveToCol == 2 || moveFromCol - moveToCol == -2);
 	}
-//	public boolean isQueensMove(){
-//		//does current move is queenqs move
-//		if(moveFromCol - moveToCol > 2 || moveFromCol - moveToCol < -2)
-//			return true;
-//		else return false;
-//
-//	}
 
 	public int getMoveFromRow() {
 		return moveFromRow;
@@ -79,5 +78,5 @@ public class CheckersMove {
 	public void setMoveToCol(int moveToCol) {
 		this.moveToCol = moveToCol;
 	}
-	
+
 }
