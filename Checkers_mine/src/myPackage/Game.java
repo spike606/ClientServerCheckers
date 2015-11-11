@@ -116,6 +116,7 @@ public class Game {
 		
 		//if second beating
 		if ((checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen()) || checkerMove.isBeatingPerformedByQueen()) {
+			System.out.println("get seconf beating");
 			possibleMoves = boardData.getPossibleSecondBeating(currentPlayer,
 					checkerMove.getMoveToRow(), checkerMove.getMoveToCol());
 			if (possibleMoves != null) {

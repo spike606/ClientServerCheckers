@@ -59,15 +59,15 @@ public class GameData {
 		// makeMove(move.fromRow, move.fromCol, move.toRow, move.toCol);
 
 		// check queen move, it is beating?
-		if(board[move.getMoveFromRow()][move.getMoveFromCol()] == BLACK_QUEEN ||
-				board[move.getMoveFromRow()][move.getMoveFromCol()] == WHITE_QUEEN){
+		if (board[move.getMoveFromRow()][move.getMoveFromCol()] == BLACK_QUEEN
+				|| board[move.getMoveFromRow()][move.getMoveFromCol()] == WHITE_QUEEN) {
 			removeOpponentCheckerIfBeating(move);
 			moveChecker(move);
 		}
-//		if (move.isQueensMove()) {
-//
-//
-//		}
+		// if (move.isQueensMove()) {
+		//
+		//
+		// }
 		// check if normal checkers beats
 		else if (move.isMoveBeating()) {
 			removeOpponentChecker(move);
@@ -79,7 +79,13 @@ public class GameData {
 
 	}
 
-	private void removeOpponentCheckerIfBeating(CheckersMove move) {//checks queen move and remove checker if it is beating
+	private void removeOpponentCheckerIfBeating(CheckersMove move) {// checks
+																	// queen
+																	// move and
+																	// remove
+																	// checker
+																	// if it is
+																	// beating
 		int opponentCheckerRow = 0;
 		int opponentCheckerCol = 0;
 
@@ -167,10 +173,18 @@ public class GameData {
 	}
 
 	private void checkIfNewQueen(CheckersMove move) {
-		if (move.getMoveToRow() == 0 && board[move.getMoveToRow()][move.getMoveToCol()] == WHITE)
+		if (move.getMoveToRow() == 0 && board[move.getMoveToRow()][move.getMoveToCol()] == WHITE) {
+			move.setMovePerformedByQueen(true);// to prevent beating by new
+												// queen immideiatly
 			board[move.getMoveToRow()][move.getMoveToCol()] = WHITE_QUEEN;
-		if (move.getMoveToRow() == 7 && board[move.getMoveToRow()][move.getMoveToCol()] == BLACK)
+
+		}
+		if (move.getMoveToRow() == 7 && board[move.getMoveToRow()][move.getMoveToCol()] == BLACK) {
+			move.setMovePerformedByQueen(true);// to prevent beating by new
+												// queen immideiatly
 			board[move.getMoveToRow()][move.getMoveToCol()] = BLACK_QUEEN;
+
+		}
 	}
 
 	private void moveChecker(CheckersMove move) {
@@ -456,10 +470,9 @@ public class GameData {
 
 			// 1 direction
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
-				if(board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN){
+				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -477,10 +490,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 2 direction
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
-				if(board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN){
+				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -498,10 +510,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 3 direction
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
-				if(board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN){
+				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -519,10 +530,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 4 direction
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
-				if(board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN){
+				if (board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN)
 						&& enemyCheckerFound == true) {// second
 														// enemy
 														// checker
@@ -543,10 +553,9 @@ public class GameData {
 		} else {
 			// 1 direction
 			while (--rowToCheck >= 0 && --colToCheck >= 0) {
-				if(board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN){
+				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -564,10 +573,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 2 direction
 			while (--rowToCheck >= 0 && ++colToCheck <= 7) {
-				if(board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN){
+				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -585,10 +593,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 3 direction
 			while (++rowToCheck <= 7 && --colToCheck >= 0) {
-				if(board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN){
+				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
@@ -606,10 +613,9 @@ public class GameData {
 			enemyCheckerFound = false;
 			// 4 direction
 			while (++rowToCheck <= 7 && ++colToCheck <= 7) {
-				if(board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN){
+				if (board[rowToCheck][colToCheck] == BLACK || board[rowToCheck][colToCheck] == BLACK_QUEEN) {
 					break;
-				}
-				else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
+				} else if ((board[rowToCheck][colToCheck] == WHITE || board[rowToCheck][colToCheck] == WHITE_QUEEN)
 						&& enemyCheckerFound == true) {// second enemy checker -
 														// stop searching
 					enemyCheckerFound = false;
