@@ -7,6 +7,7 @@ public class CheckersMove {
 	
 	private int moveFromRow, moveFromCol; // coordinates of the checker to be moved 
 	private int moveToRow, moveToCol; // coordinates where the checker will be moved
+	private boolean movePerformedByQueen = false;
 	
 	public CheckersMove(int moveFromRow, int moveFromCol, int moveToRow, int moveToCol) {
 		// Constructor. Just set the values of the instance variables.
@@ -16,6 +17,14 @@ public class CheckersMove {
 		this.moveToCol = moveToCol;
 	}
 	
+	public boolean isMovePerformedByQueen() {
+		return movePerformedByQueen;
+	}
+
+	public void setMovePerformedByQueen(boolean movePerformedByQueen) {
+		this.movePerformedByQueen = movePerformedByQueen;
+	}
+
 	public boolean isMoveBeating() {
 		//if current move is beating return true
 		//return (fromRow - toRow == 2 || fromRow - toRow == -2); ORG

@@ -79,7 +79,7 @@ public class Game {
 
 	static void makeClick(int row, int col) {
 		
-		
+		///some test change
 		for (int i = 0; i < possibleMoves.length; i++)
 			if (possibleMoves[i].getMoveFromRow() == row && possibleMoves[i].getMoveFromCol() == col) {
 				chosenRow = row;
@@ -115,7 +115,7 @@ public class Game {
 		boardData.makeMove(checkerMove);
 		
 		//if second beating
-		if (checkerMove.isMoveBeating()) {
+		if (checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen()) {
 			possibleMoves = boardData.getPossibleSecondBeating(currentPlayer,
 					checkerMove.getMoveToRow(), checkerMove.getMoveToCol());
 			if (possibleMoves != null) {
@@ -130,7 +130,8 @@ public class Game {
 				return;
 			}
 		}
-		
+		checkerMove.setMovePerformedByQueen(false);
+
 		//change player
 		
 		if (currentPlayer == GameData.WHITE) {

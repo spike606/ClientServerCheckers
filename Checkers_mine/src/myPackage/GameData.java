@@ -60,6 +60,8 @@ public class GameData {
 
 		// check queen move, it is beating?
 		if (move.isQueensMove()) {
+			move.setMovePerformedByQueen(true);//set flag to know if move is performed by queen
+			//it prevends to make 2 moves (when first is not a beating and second may be)
 			removeOpponentCheckerIfBeating(move);
 			moveChecker(move);
 
