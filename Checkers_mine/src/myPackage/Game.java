@@ -113,7 +113,9 @@ public class Game {
 
 		//make a move
 		boardData.makeMove(checkerMove);
-		
+		System.out.println(checkerMove.isMovePerformedByQueen());
+		System.out.println(checkerMove.isBeatingPerformedByQueen());
+
 		//if second beating
 		if ((checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen()) || checkerMove.isBeatingPerformedByQueen()) {
 			System.out.println("get seconf beating");
@@ -142,7 +144,7 @@ public class Game {
 			if (possibleMoves == null)
 				gameIsOver("BLACK has no moves.  WHITE wins.");
 			else if (possibleMoves[0].isMoveBeating())
-				CheckersGame.infoLabel.setText("BLACK:  Make your move.  You must jump.");
+				CheckersGame.infoLabel.setText("BLACK:  Make your move.  You must beat.");
 			else
 				CheckersGame.infoLabel.setText("BLACK:  Make your move.");
 		} else {
@@ -151,7 +153,7 @@ public class Game {
 			if (possibleMoves == null)
 				gameIsOver("WHITE has no moves.  BLACK wins.");
 			else if (possibleMoves[0].isMoveBeating())
-				CheckersGame.infoLabel.setText("WHITE:  Make your move.  You must jump.");
+				CheckersGame.infoLabel.setText("WHITE:  Make your move.  You must beat.");
 			else
 				CheckersGame.infoLabel.setText("WHITE:  Make your move.");
 		}

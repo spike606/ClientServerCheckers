@@ -96,7 +96,7 @@ public class GameData {
 		System.out.println("second" + checkRow);
 		if (move.getMoveFromRow() < move.getMoveToRow() && move.getMoveFromCol() < move.getMoveToCol()) {
 
-			while (checkCol < 7 && checkRow < 7) {
+			while (checkCol < move.getMoveToCol() && checkRow < move.getMoveToRow()) {
 				System.out.println("1loop");
 				checkCol++;
 				checkRow++;
@@ -104,12 +104,14 @@ public class GameData {
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
+					move.setMovePerformedByQueen(false);
+
 					break;
 				}
 			}
 
 		} else if (move.getMoveFromRow() < move.getMoveToRow() && move.getMoveFromCol() > move.getMoveToCol()) {
-			while (checkCol > 0 && checkRow < 7) {
+			while (checkCol > move.getMoveToCol() && checkRow < move.getMoveToRow()) {
 				System.out.println("2loop");
 				checkCol--;
 				checkRow++;
@@ -117,13 +119,14 @@ public class GameData {
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
+					move.setMovePerformedByQueen(false);
 
 					break;
 				}
 			}
 
 		} else if (move.getMoveFromRow() > move.getMoveToRow() && move.getMoveFromCol() < move.getMoveToCol()) {
-			while (checkCol < 7 && checkRow > 0) {
+			while (checkCol < move.getMoveToCol() && checkRow > move.getMoveToRow()) {
 				System.out.println("3loop");
 				checkCol++;
 				checkRow--;
@@ -131,13 +134,14 @@ public class GameData {
 				System.out.println(checkRow);
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
+					move.setMovePerformedByQueen(false);
 
 					break;
 				}
 			}
 
 		} else if (move.getMoveFromRow() > move.getMoveToRow() && move.getMoveFromCol() > move.getMoveToCol()) {
-			while (checkCol > 0 && checkRow > 0) {
+			while (checkCol > move.getMoveToCol() && checkRow > move.getMoveToRow()) {
 				System.out.println("4loop");
 
 				checkCol--;
@@ -146,6 +150,7 @@ public class GameData {
 				System.out.println(checkCol);
 				if (board[checkRow][checkCol] != EMPTY) {
 					move.setBeatingPerformedByQueen(true);
+					move.setMovePerformedByQueen(false);
 
 					break;
 				}
