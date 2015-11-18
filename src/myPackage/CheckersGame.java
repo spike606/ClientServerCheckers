@@ -45,8 +45,13 @@ public class CheckersGame {
 				window.setResizable(false);
 				window.setLocationRelativeTo(null);
 				window.setVisible(true);
+				
+
+
 			}
 		});
+		
+
 
 	}
 

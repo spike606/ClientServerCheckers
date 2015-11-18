@@ -77,9 +77,12 @@ public class GameFlowClient {
 		currentPlayer = WHITE;// white starts a game
 		//TODO:possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
 		CheckersGame.infoLabel.setText("WHITE: make your move.");
-		gameRunning = true;
+		//gameRunning = true;
 		CheckersGame.startButton.setEnabled(false);
 		CheckersGame.stopButton.setEnabled(true);
+		
+		Connecting connecting = new Connecting();
+		connecting.start();
 
 	}
 

@@ -11,6 +11,7 @@ import CommonPackage.Message;
  * Class for 1 room - 2 players
  * MASTER - means data on the server side
  */
+
 public class Room {
 
 	/*
@@ -21,15 +22,18 @@ public class Room {
 
 	// obects to mengae game for this room
 	GameFlow gameFlow;
-	//to communicate
+	// to communicate
 	Message messageToClient;
 	Message messageFromClient;
 
 	public Room() {
 
 		gameFlow = new GameFlow();
-		messageToClient = new Message();
+
 		messageFromClient = new Message();
+		// prepare message
+		messageToClient = new Message();
+		messageToClient.setTextMessage("Hello");
 
 	}
 
@@ -49,14 +53,6 @@ public class Room {
 
 			this.mySocket = mySocket;
 			this.myColor = myColor;
-			try {
-				myInput = new ObjectInputStream(mySocket.getInputStream());
-				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
-				myOutput.writeObject("WELCOME " + myColor);
-				myOutput.writeObject("MESSAGE Waiting for opponent to connect");
-			} catch (IOException e) {
-				System.out.println("Player died: " + e);
-			}
 
 		}
 
@@ -68,6 +64,24 @@ public class Room {
 		}
 
 		public void run() {
+			messageToClient = new Message();
+			messageToClient.setTextMessage("Hello");
+			try {
+				//myInput = new ObjectInputStream(mySocket.getInputStream());
+
+				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+//			while (true) {
+				try {
+					myOutput.writeObject(messageToClient);
+
+				} catch (IOException e) {
+					System.out.println("Player died: " + e);
+				}
+//			}
 
 		}
 	}
