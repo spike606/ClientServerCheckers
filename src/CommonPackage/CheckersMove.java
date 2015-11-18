@@ -1,4 +1,4 @@
-package myPackage;
+package CommonPackage;
 
 /*
  * Class which represent move in the game (checker and queen)

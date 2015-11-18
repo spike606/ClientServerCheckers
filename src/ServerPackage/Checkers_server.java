@@ -23,7 +23,8 @@ public class Checkers_server {
             	Room.Player playerBlack = room.new Player(serversocket.accept(), "Black");
             	playerWhite.setOpponent(playerBlack);
             	playerBlack.setOpponent(playerWhite);
-            	room.setCurrentPlayerMaster(playerWhite);
+            	//TODO:room.setCurrentPlayerMaster(playerWhite);
+            	room.gameFlow.startNewGame();
             	playerWhite.start();
             	playerBlack.start();
             }

@@ -1,9 +1,9 @@
-package myPackage;
+package ServerPackage;
 
 import java.util.ArrayList;
 
 
-import myPackage.CheckersMove;
+import CommonPackage.*;
 
 /*
  * Class used to store data about board - pawns location etc

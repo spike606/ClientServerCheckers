@@ -59,24 +59,24 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 				}
 				// draw current checkers on board
-				switch (GameFlow.boardData.getFieldOnBoard(row, col)) {
+				switch (GameFlowClient.getFieldOnBoard(row, col)) {
 
-				case GameData.WHITE:
+				case GameFlowClient.WHITE:
 					g.setColor(Color.WHITE);
 					g.fillOval((col * 50) + 5, (row * 50) + 5, 40, 40);
 					break;
-				case GameData.WHITE_QUEEN:
+				case GameFlowClient.WHITE_QUEEN:
 					g.setColor(Color.WHITE);
 					g.fillOval((col * 50) + 5, (row * 50) + 5, 40, 40);
 					g.setColor(Color.BLACK);
 					g.drawString("Q", (col * 50) + 20, (row * 50) + 30);// draw
 																		// queen
 					break;
-				case GameData.BLACK:
+				case GameFlowClient.BLACK:
 					g.setColor(Color.BLACK);
 					g.fillOval((col * 50) + 5, (row * 50) + 5, 40, 40);
 					break;
-				case GameData.BLACK_QUEEN:
+				case GameFlowClient.BLACK_QUEEN:
 					g.setColor(Color.BLACK);
 					g.fillOval((col * 50) + 5, (row * 50) + 5, 40, 40);
 					g.setColor(Color.WHITE);
@@ -90,16 +90,16 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		}
 
-		if (GameFlow.gameRunning) {
+		if (GameFlowClient.gameRunning) {
 
 			/*
 			 * Draw a border around the pieces that can be moved.
 			 */
 			g.setColor(Color.yellow);
 
-			for (int i = 0; i < GameFlow.possibleMoves.length; i++) {
+			for (int i = 0; i < GameFlowClient.possibleMoves.length; i++) {
 
-				g.drawRect(GameFlow.possibleMoves[i].getMoveFromCol() * 50, GameFlow.possibleMoves[i].getMoveFromRow() * 50, 49,
+				g.drawRect(GameFlowClient.possibleMoves[i].getMoveFromCol() * 50, GameFlowClient.possibleMoves[i].getMoveFromRow() * 50, 49,
 						49);
 			}
 			/*
@@ -107,14 +107,14 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			 * 0) and red border around fields where can be moved
 			 */
 
-			if (GameFlow.chosenRow >= 0) {
+			if (GameFlowClient.chosenRow >= 0) {
 				g.setColor(Color.green);
-				g.drawRect(GameFlow.chosenCol * 50, GameFlow.chosenRow * 50, 49, 49);
+				g.drawRect(GameFlowClient.chosenCol * 50, GameFlowClient.chosenRow * 50, 49, 49);
 				g.setColor(Color.RED);
-				for (int i = 0; i < GameFlow.possibleMoves.length; i++) {
-					if (GameFlow.possibleMoves[i].getMoveFromCol() == GameFlow.chosenCol
-							&& GameFlow.possibleMoves[i].getMoveFromRow() == GameFlow.chosenRow) {
-						g.drawRect(GameFlow.possibleMoves[i].getMoveToCol() * 50, GameFlow.possibleMoves[i].getMoveToRow() * 50,
+				for (int i = 0; i < GameFlowClient.possibleMoves.length; i++) {
+					if (GameFlowClient.possibleMoves[i].getMoveFromCol() == GameFlowClient.chosenCol
+							&& GameFlowClient.possibleMoves[i].getMoveFromRow() == GameFlowClient.chosenRow) {
+						g.drawRect(GameFlowClient.possibleMoves[i].getMoveToCol() * 50, GameFlowClient.possibleMoves[i].getMoveToRow() * 50,
 								49, 49);
 					}
 				}
@@ -147,13 +147,13 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (GameFlow.gameRunning == false)
+		if (GameFlowClient.gameRunning == false)
 			CheckersGame.infoLabel.setText("Click START button to start a new game");
 		else {
 			int col = (e.getX() / 50);
 			int row = (e.getY() / 50);
 			if (col >= 0 && col < 8 && row >= 0 && row < 8)
-				GameFlow.makeClick(row, col);
+				GameFlowClient.makeClick(row, col);
 		}
 	}
 
@@ -169,9 +169,9 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == CheckersGame.startButton)
-			GameFlow.startNewGame();
+			GameFlowClient.startNewGame();
 		else if (e.getSource() == CheckersGame.stopButton)
-			GameFlow.resignGame();
+			GameFlowClient.resignGame();
 	}
 
 }
