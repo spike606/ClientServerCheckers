@@ -5,6 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import CommonPackage.Message;
+
 /*
  * Class for 1 room - 2 players
  * MASTER - means data on the server side
@@ -17,13 +19,17 @@ public class Room {
 	 * initilized 2)when players makes moves - check if moves are legal ????!!!
 	 */
 
-	
-	//obects to mengae game for this room
+	// obects to mengae game for this room
 	GameFlow gameFlow;
+	//to communicate
+	Message messageToClient;
+	Message messageFromClient;
 
 	public Room() {
 
 		gameFlow = new GameFlow();
+		messageToClient = new Message();
+		messageFromClient = new Message();
 
 	}
 
