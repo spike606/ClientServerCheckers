@@ -1,10 +1,16 @@
 package CommonPackage;
 
+import java.io.Serializable;
+
 /*
  * Class which represent move in the game (checker and queen)
  */
-public class CheckersMove {
+public class CheckersMove implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7989998894212425464L;
 	private int moveFromRow, moveFromCol; // coordinates of the checker to be
 											// moved
 	private int moveToRow, moveToCol; // coordinates where the checker will be

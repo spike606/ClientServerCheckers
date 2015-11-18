@@ -17,6 +17,11 @@ public class GameFlow {
 	static CheckersMove[] possibleMoves;// array with possible moves for current
 										// player
 
+	public static CheckersMove[] getPossibleMoves() {
+		return possibleMoves;
+	}
+
+
 	public GameFlow() {
 
 		initializeGame();
@@ -24,7 +29,8 @@ public class GameFlow {
 	}
 
 	/*
-	 * Running when program starts, needed to draw view
+	 * Running when program starts, needed to draw view sets white as current
+	 * player on start
 	 */
 	private void initializeGame() {
 		if (gameRunning == true) {
@@ -34,36 +40,39 @@ public class GameFlow {
 			return;
 		}
 		boardData = new GameData();
+		currentPlayer = GameData.WHITE;// white starts a game
+		possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
+		gameRunning = true;
 
 	}
 
 	/*
-	 * Performed after clicking button START
+	 * Performed after clicking button START preparing first message to clients
+	 * when gme starts
 	 */
-	void startNewGame() {
+	// void startNewGame() {
+	//
+	// if (gameRunning == true) {
+	// // This should not be possible
+	// // CheckersGame.infoLabel.setText("Finish the current game first!");
+	// return;
+	// }
 
-		if (gameRunning == true) {
-			// This should not be possible
-			// CheckersGame.infoLabel.setText("Finish the current game first!");
-			return;
-		}
+	// prepare first message to clients
+	// messageToClient.setTextMessage("Hello");
 
+	// TODO:CheckersGame.infoLabel.setText("WHITE: make your move.");
+	// CheckersGame.startButton.setEnabled(false);
+	// CheckersGame.stopButton.setEnabled(true);
 
-		currentPlayer = GameData.WHITE;// white starts a game
-		possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
-		// TODO:CheckersGame.infoLabel.setText("WHITE: make your move.");
-		gameRunning = true;
-		// CheckersGame.startButton.setEnabled(false);
-		// CheckersGame.stopButton.setEnabled(true);
-
-	}
+	// }
 
 	/*
 	 * Performed after clicking button STOP
 	 */
 	void resignGame() {
 		if (gameRunning == false) {
-//			CheckersGame.infoLabel.setText("There is no game in progress!");
+			// CheckersGame.infoLabel.setText("There is no game in progress!");
 			return;
 		}
 		if (currentPlayer == GameData.WHITE)
@@ -72,7 +81,7 @@ public class GameFlow {
 			gameIsOver("BLACK resigns.  WHITE wins!");
 	}
 
-	private  void gameIsOver(String string) {
+	private void gameIsOver(String string) {
 		// CheckersGame.infoLabel.setText(string);
 		// CheckersGame.startButton.setEnabled(true);
 		// CheckersGame.stopButton.setEnabled(false);
@@ -82,7 +91,7 @@ public class GameFlow {
 	/*
 	 * Handle Click on board depending of current game state
 	 */
-	 void makeClick(int row, int col) {
+	void makeClick(int row, int col) {
 
 		/*
 		 * When no piece is selected Choose piece to move and save coordinates
@@ -128,7 +137,7 @@ public class GameFlow {
 	/*
 	 * Make specific move
 	 */
-	private  void performMove(CheckersMove checkerMove) {
+	private void performMove(CheckersMove checkerMove) {
 
 		// make a move
 		boardData.makeMove(checkerMove);

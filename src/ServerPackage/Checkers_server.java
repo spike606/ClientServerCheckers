@@ -26,16 +26,16 @@ public class Checkers_server {
 
 				try{
 					// TODO: wyodrebnic klase player z klasy room
-					Room.Player playerWhite = room.new Player(serversocket.accept(), "White");
+					Room.Player playerWhite = room.new Player(serversocket.accept(), GameData.WHITE);
 					System.out.println("Room #" + roomNumber + ": player #1 connected.");
 
-					Room.Player playerBlack = room.new Player(serversocket.accept(), "Black");
+					Room.Player playerBlack = room.new Player(serversocket.accept(), GameData.BLACK);
 					System.out.println("Room #" + roomNumber + ": player #2 connected.");
 
 					playerWhite.setOpponent(playerBlack);
 					playerBlack.setOpponent(playerWhite);
 					// TODO:room.setCurrentPlayerMaster(playerWhite);
-					room.gameFlow.startNewGame();
+//					room.gameFlow.startNewGame();
 					playerWhite.start();
 					playerBlack.start();
 

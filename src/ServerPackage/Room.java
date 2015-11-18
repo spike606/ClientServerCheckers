@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import CommonPackage.CheckersMove;
 import CommonPackage.Message;
 
 /*
@@ -24,18 +25,16 @@ public class Room {
 	GameFlow gameFlow;
 	// to communicate
 	Message messageToClient;
+
 	Message messageFromClient;
 
 	public Room() {
 
 		gameFlow = new GameFlow();
 
-		messageFromClient = new Message();
-		// prepare message
-		messageToClient = new Message();
-		messageToClient.setTextMessage("Hello");
-
 	}
+
+
 
 	/*
 	 * Player class Constructs a handler thread for a given socket and mark
@@ -43,13 +42,16 @@ public class Room {
 	 */
 	class Player extends Thread {
 
-		private String myColor;
+		private int myColor;
 		private Player myOpponent;
 		private Socket mySocket;
 		private ObjectInputStream myInput;
 		private ObjectOutputStream myOutput;
 
-		public Player(Socket mySocket, String myColor) {
+		private Message messageFromClient = new Message();
+		private Message messageToClient = new Message();
+
+		public Player(Socket mySocket, int myColor) {
 
 			this.mySocket = mySocket;
 			this.myColor = myColor;
@@ -64,24 +66,37 @@ public class Room {
 		}
 
 		public void run() {
-			messageToClient = new Message();
-			messageToClient.setTextMessage("Hello");
+
 			try {
-				//myInput = new ObjectInputStream(mySocket.getInputStream());
+				// myInput = new ObjectInputStream(mySocket.getInputStream());
 
 				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-//			while (true) {
-				try {
-					myOutput.writeObject(messageToClient);
+			// while (true) {
+			try {
+				prepareMessageToClient(GameFlow.boardData.getBoard(), true, GameData.WHITE, GameFlow.getPossibleMoves()
+						, GameData.WHITE, "First message");
+				myOutput.writeObject(messageToClient);
 
-				} catch (IOException e) {
-					System.out.println("Player died: " + e);
-				}
-//			}
+			} catch (IOException e) {
+				System.out.println("Player died: " + e);
+			}
+			// }
+
+		}
+		@SuppressWarnings("unused")
+		private void prepareMessageToClient(int[][] board, boolean gameRunning, int currentPlayer,
+				CheckersMove[] possibleMoves, int winner, String textMessage) {
+			
+			messageToClient.setBoard(board);
+			messageToClient.setGameRunning(gameRunning);
+			messageToClient.setCurrentPlayer(currentPlayer);
+			messageToClient.setPossibleMoves(possibleMoves);
+			messageToClient.setWinner(winner);
+			messageToClient.setTextMessage(textMessage);
 
 		}
 	}

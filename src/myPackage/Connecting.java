@@ -30,12 +30,12 @@ public class Connecting extends Thread {
 		try {
 			// Setup networking
 
-			mySocket = new Socket(HOST_NAME, SERVER_PORT);
+			mySocket = new Socket("localhost", SERVER_PORT);
 			myInput = new ObjectInputStream(mySocket.getInputStream());
 			myOutput = new ObjectOutputStream(mySocket.getOutputStream());
 
 		} catch (IOException e1) {
-			System.out.println("IOException.");
+			System.out.println("IOException1.");
 		}
 		// while (true) {
 		try {
@@ -43,11 +43,16 @@ public class Connecting extends Thread {
 			object = myInput.readObject();
 			messageFromServer = (Message) object;
 			System.out.println(messageFromServer.getTextMessage());
+			System.out.println(messageFromServer.getCurrentPlayer());
+			System.out.println(messageFromServer.getWinner());
+			System.out.println(messageFromServer.getPossibleMoves());
+			System.out.println(messageFromServer.getBoard());
+			System.out.println(messageFromServer.isGameRunning());
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("Class not found.");
 		} catch (IOException e) {
-			System.out.println("IOException.");
+			System.out.println("IOException2.");
 
 		}
 
