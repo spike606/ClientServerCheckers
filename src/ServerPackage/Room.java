@@ -5,8 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import CommonPackage.CheckersMove;
-import CommonPackage.Message;
+import CommonPackage.*;
 
 /*
  * Class for 1 room - 2 players
@@ -21,20 +20,22 @@ public class Room {
 	 * initilized 2)when players makes moves - check if moves are legal ????!!!
 	 */
 
+	int roomNumber;
+
 	// obects to mengae game for this room
 	GameFlow gameFlow;
 	// to communicate
-	Message messageToClient;
+	MessageFromServer messageToClient;
 
-	Message messageFromClient;
+	MessageFromClient messageFromClient;
 
-	public Room() {
+	public Room(int roomNumber) {
+
+		this.roomNumber = roomNumber;
 
 		gameFlow = new GameFlow();
 
 	}
-
-
 
 	/*
 	 * Player class Constructs a handler thread for a given socket and mark
@@ -48,8 +49,8 @@ public class Room {
 		private ObjectInputStream myInput;
 		private ObjectOutputStream myOutput;
 
-		private Message messageFromClient = new Message();
-		private Message messageToClient = new Message();
+		private MessageFromServer messageFromClient = new MessageFromServer();
+		private MessageFromServer messageToClient = new MessageFromServer();
 
 		public Player(Socket mySocket, int myColor) {
 
@@ -72,14 +73,16 @@ public class Room {
 
 				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 			// while (true) {
 			try {
-				prepareMessageToClient(GameFlow.boardData.getBoard(), true, GameData.WHITE, GameFlow.getPossibleMoves()
-						, GameData.WHITE, "First message");
-				myOutput.writeObject(messageToClient);
+				if(GameFlow.currentPlayer == myColor){
+					prepareMessageToClient(GameFlow.boardData.getBoard(), true, GameData.WHITE, GameFlow.getPossibleMoves(),
+							GameData.WHITE, "First message");
+					myOutput.writeObject(messageToClient);
+				}
+
 
 			} catch (IOException e) {
 				System.out.println("Player died: " + e);
@@ -87,10 +90,11 @@ public class Room {
 			// }
 
 		}
+
 		@SuppressWarnings("unused")
 		private void prepareMessageToClient(int[][] board, boolean gameRunning, int currentPlayer,
 				CheckersMove[] possibleMoves, int winner, String textMessage) {
-			
+
 			messageToClient.setBoard(board);
 			messageToClient.setGameRunning(gameRunning);
 			messageToClient.setCurrentPlayer(currentPlayer);

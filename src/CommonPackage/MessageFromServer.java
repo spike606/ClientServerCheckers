@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Class uses to sending data from server to client and from client to server
  * TODO:ZABEZPIECZYC KLASE - MOZLIWOSC ZMIANY WRAZLIWYCH DANYCH JAK WYGRANY CZY PRZEGRANY
  */
-public class Message implements Serializable {
+public class MessageFromServer implements Serializable {
 
 	/**
 	 * 

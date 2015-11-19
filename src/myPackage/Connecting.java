@@ -5,7 +5,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import CommonPackage.Message;
+import CommonPackage.*;
+import ServerPackage.GameFlow;
 
 public class Connecting extends Thread {
 
@@ -18,8 +19,8 @@ public class Connecting extends Thread {
 
 	Object object;
 
-	private Message messageToServer;
-	private Message messageFromServer;
+	private MessageFromClient messageToServer;
+	private MessageFromServer messageFromServer;
 
 	public Connecting() {
 
@@ -41,13 +42,16 @@ public class Connecting extends Thread {
 		try {
 
 			object = myInput.readObject();
-			messageFromServer = (Message) object;
+			messageFromServer = (MessageFromServer) object;
 			System.out.println(messageFromServer.getTextMessage());
 			System.out.println(messageFromServer.getCurrentPlayer());
 			System.out.println(messageFromServer.getWinner());
 			System.out.println(messageFromServer.getPossibleMoves());
 			System.out.println(messageFromServer.getBoard());
 			System.out.println(messageFromServer.isGameRunning());
+
+			getDataFromServer(messageFromServer.getBoard(), messageFromServer.isGameRunning(),
+					messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves());
 
 		} catch (ClassNotFoundException e) {
 			System.out.println("Class not found.");
@@ -57,6 +61,15 @@ public class Connecting extends Thread {
 		}
 
 		// }
+
+	}
+
+	private void getDataFromServer(int[][] board, boolean gameRunning, int currentPlayer,
+			CheckersMove[] possibleMoves) {
+		GameFlowClient.setBoard(board);
+		GameFlowClient.setGameRunning(gameRunning);
+		GameFlowClient.setCurrentPlayer(currentPlayer);
+		GameFlowClient.setPossibleMoves(possibleMoves);
 
 	}
 

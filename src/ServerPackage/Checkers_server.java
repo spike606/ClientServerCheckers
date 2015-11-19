@@ -20,7 +20,7 @@ public class Checkers_server {
 		try {
 			while (true) {
 
-				Room room = new Room();
+				Room room = new Room(roomNumber);
 				System.out.println("Room number " + roomNumber + " created.");
 				System.out.println("Waiting for players...");
 

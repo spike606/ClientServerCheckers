@@ -86,6 +86,38 @@ public class GameFlowClient {
 
 	}
 
+	public static boolean isGameRunning() {
+		return gameRunning;
+	}
+
+	public static void setGameRunning(boolean gameRunning) {
+		GameFlowClient.gameRunning = gameRunning;
+	}
+
+	public static int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public static void setCurrentPlayer(int currentPlayer) {
+		GameFlowClient.currentPlayer = currentPlayer;
+	}
+
+	public static int[][] getBoard() {
+		return board;
+	}
+
+	public static void setBoard(int[][] board) {
+		GameFlowClient.board = board;
+	}
+
+	public static CheckersMove[] getPossibleMoves() {
+		return possibleMoves;
+	}
+
+	public static void setPossibleMoves(CheckersMove[] possibleMoves) {
+		GameFlowClient.possibleMoves = possibleMoves;
+	}
+
 	/*
 	 * Performed after clicking button STOP
 	 */
