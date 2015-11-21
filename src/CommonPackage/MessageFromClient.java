@@ -9,23 +9,23 @@ public class MessageFromClient implements Serializable {
 	 */
 	private static final long serialVersionUID = -8365257093223296190L;
 
-	private int chosenRow;
-	private int chosenCol;
+	private int row;
+	private int col;
 
 	public int getChosenRow() {
-		return chosenRow;
+		return row;
 	}
 
-	public void setChosenRow(int chosenRow) {
-		this.chosenRow = chosenRow;
+	public void setChosenRow(int row) {
+		this.row = row;
 	}
 
 	public int getChosenCol() {
-		return chosenCol;
+		return col;
 	}
 
-	public void setChosenCol(int chosenCol) {
-		this.chosenCol = chosenCol;
+	public void setChosenCol(int col) {
+		this.col = col;
 	}
 
 }

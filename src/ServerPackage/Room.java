@@ -49,7 +49,7 @@ public class Room {
 		private ObjectInputStream myInput;
 		private ObjectOutputStream myOutput;
 
-		private MessageFromServer messageFromClient = new MessageFromServer();
+		private MessageFromClient messageFromClient = new MessageFromClient();
 		private MessageFromServer messageToClient = new MessageFromServer();
 
 		public Player(Socket mySocket, int myColor) {
@@ -69,20 +69,50 @@ public class Room {
 		public void run() {
 
 			try {
-				// myInput = new ObjectInputStream(mySocket.getInputStream());
-
+				myInput = new ObjectInputStream(mySocket.getInputStream());
 				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
+				myOutput.flush();
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 			// while (true) {
 			try {
-				if(GameFlow.currentPlayer == myColor){
-					prepareMessageToClient(GameFlow.boardData.getBoard(), true, GameData.WHITE, GameFlow.getPossibleMoves(),
-							GameData.WHITE, "First message");
-					myOutput.writeObject(messageToClient);
-				}
+				if (gameFlow.getCurrentPlayer() == myColor) {
 
+					prepareMessageToClient(gameFlow.boardData.getBoard(),gameFlow.getChosenCol(), gameFlow.getChosenRow(),
+							true, GameData.WHITE,
+							gameFlow.getPossibleMoves(), GameData.EMPTY, "First message");
+					myOutput.writeObject(messageToClient);
+					try {
+						messageFromClient = (MessageFromClient) myInput.readObject();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					//getMessageFromClient(messageFromClient);
+					System.out.println("Col From client " + messageFromClient.getChosenCol());
+					System.out.println("Row From client " + messageFromClient.getChosenRow());
+
+					gameFlow.makeClick(messageFromClient.getChosenRow(),messageFromClient.getChosenCol());
+					prepareMessageToClient(gameFlow.boardData.getBoard(),gameFlow.getChosenCol(), gameFlow.getChosenRow(),
+							true, GameData.WHITE,
+							gameFlow.getPossibleMoves(), GameData.EMPTY, "First message");					
+					myOutput.reset();
+					myOutput.writeObject(messageToClient);
+					try {
+						messageFromClient = (MessageFromClient) myInput.readObject();
+					} catch (ClassNotFoundException e) {
+						e.printStackTrace();
+					}
+					//getMessageFromClient(messageFromClient);
+					gameFlow.makeClick(messageFromClient.getChosenRow(),messageFromClient.getChosenCol());
+					prepareMessageToClient(gameFlow.boardData.getBoard(),gameFlow.getChosenCol(), gameFlow.getChosenRow(),
+							true, GameData.WHITE,
+							gameFlow.getPossibleMoves(), GameData.EMPTY, "First message");						
+					myOutput.reset();
+					myOutput.writeObject(messageToClient);
+
+					
+				}
 
 			} catch (IOException e) {
 				System.out.println("Player died: " + e);
@@ -92,10 +122,12 @@ public class Room {
 		}
 
 		@SuppressWarnings("unused")
-		private void prepareMessageToClient(int[][] board, boolean gameRunning, int currentPlayer,
+		private void prepareMessageToClient(int[][] board,int chosenCol, int chosenRow, boolean gameRunning, int currentPlayer,
 				CheckersMove[] possibleMoves, int winner, String textMessage) {
 
 			messageToClient.setBoard(board);
+			messageToClient.setChosenCol(chosenCol);
+			messageToClient.setChosenRow(chosenRow);
 			messageToClient.setGameRunning(gameRunning);
 			messageToClient.setCurrentPlayer(currentPlayer);
 			messageToClient.setPossibleMoves(possibleMoves);
@@ -103,6 +135,14 @@ public class Room {
 			messageToClient.setTextMessage(textMessage);
 
 		}
+
+//		private void getMessageFromClient(MessageFromClient messageFromClient) {
+//			gameFlow.get = messageFromClient.getChosenRow();
+//			gameFlow.chosenCol = messageFromClient.getChosenCol();
+//			System.out.println(gameFlow.chosenRow);
+//			System.out.println(gameFlow.chosenCol);
+//
+//		}
 	}
 
 }

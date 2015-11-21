@@ -16,9 +16,28 @@ public class MessageFromServer implements Serializable {
 	private boolean gameRunning;// flag, is game in progress
 	private int currentPlayer;// contain current player (BLACK or WHITE)
 	private CheckersMove[] possibleMoves;// array with possible moves for
-											// current
+
+	// current
+	private int chosenRow;
+	private int chosenCol;
 	private int winner; // contain winner player (BLACK or WHITE - 0, 1)
 	private String textMessage;
+
+	public int getChosenRow() {
+		return chosenRow;
+	}
+
+	public void setChosenRow(int chosenRow) {
+		this.chosenRow = chosenRow;
+	}
+
+	public int getChosenCol() {
+		return chosenCol;
+	}
+
+	public void setChosenCol(int chosenCol) {
+		this.chosenCol = chosenCol;
+	}
 
 	public int[][] getBoard() {
 		return board;

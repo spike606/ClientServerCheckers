@@ -19,6 +19,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	// board size
 	private static final int PREF_W = 400;
 	private static final int PREF_H = 400;
+	  Connecting connecting;
 
 	public BoardComponent() {
 		addMouseListener(this);
@@ -106,7 +107,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			 * When checker is selected then draw a green border (selectedRow >=
 			 * 0) and red border around fields where can be moved
 			 */
-
+			System.out.println("Chosen Row " + GameFlowClient.chosenRow);
 			if (GameFlowClient.chosenRow >= 0) {
 				g.setColor(Color.green);
 				g.drawRect(GameFlowClient.chosenCol * 50, GameFlowClient.chosenRow * 50, 49, 49);
@@ -153,7 +154,8 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			int col = (e.getX() / 50);
 			int row = (e.getY() / 50);
 			if (col >= 0 && col < 8 && row >= 0 && row < 8)
-				GameFlowClient.makeClick(row, col);
+				Connecting.sendClick(row,col);
+				//GameFlowClient.makeClick(row, col);
 		}
 	}
 

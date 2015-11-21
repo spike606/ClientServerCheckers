@@ -9,18 +9,42 @@ public class GameFlow {
 
 	static boolean gameRunning = false;// flag, is game in progress
 
-	static GameData boardData;// object to manage game logic
-	static int currentPlayer;// contain current player (BLACK or WHITE)
-	static int chosenRow = -1;// coordinates of selected checker
-	static int chosenCol = -1;// -1 means no selected row or column
+	GameData boardData;// object to manage game logic
+	private int currentPlayer;// contain current player (BLACK or WHITE)
+
+	private int chosenRow = -1;// coordinates of selected checker
+	private int chosenCol = -1;// -1 means no selected row or column
 
 	static CheckersMove[] possibleMoves;// array with possible moves for current
 										// player
 
-	public static CheckersMove[] getPossibleMoves() {
-		return possibleMoves;
+	public int getChosenRow() {
+		return chosenRow;
 	}
 
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
+	}
+
+	public void setChosenRow(int chosenRow) {
+		this.chosenRow = chosenRow;
+	}
+
+	public int getChosenCol() {
+		return chosenCol;
+	}
+
+	public void setChosenCol(int chosenCol) {
+		this.chosenCol = chosenCol;
+	}
+
+	public CheckersMove[] getPossibleMoves() {
+		return possibleMoves;
+	}
 
 	public GameFlow() {
 
@@ -99,6 +123,7 @@ public class GameFlow {
 		 */
 		for (int i = 0; i < possibleMoves.length; i++)
 			if (possibleMoves[i].getMoveFromRow() == row && possibleMoves[i].getMoveFromCol() == col) {
+				System.out.println("piece selected");
 				chosenRow = row;
 				chosenCol = col;
 				if (currentPlayer == GameData.WHITE) {

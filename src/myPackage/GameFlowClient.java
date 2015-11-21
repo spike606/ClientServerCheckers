@@ -20,6 +20,8 @@ public class GameFlowClient {
 	static CheckersMove[] possibleMoves;// array with possible moves for current
 										// player
 
+	
+	static Connecting connecting;
 	public GameFlowClient() {
 
 		initializeGame();
@@ -81,7 +83,7 @@ public class GameFlowClient {
 		CheckersGame.startButton.setEnabled(false);
 		CheckersGame.stopButton.setEnabled(true);
 		
-		Connecting connecting = new Connecting();
+		connecting = new Connecting();
 		connecting.start();
 
 	}
@@ -92,6 +94,22 @@ public class GameFlowClient {
 
 	public static void setGameRunning(boolean gameRunning) {
 		GameFlowClient.gameRunning = gameRunning;
+	}
+
+	public static int getChosenRow() {
+		return chosenRow;
+	}
+
+	public static void setChosenRow(int chosenRow) {
+		GameFlowClient.chosenRow = chosenRow;
+	}
+
+	public static int getChosenCol() {
+		return chosenCol;
+	}
+
+	public static void setChosenCol(int chosenCol) {
+		GameFlowClient.chosenCol = chosenCol;
 	}
 
 	public static int getCurrentPlayer() {
