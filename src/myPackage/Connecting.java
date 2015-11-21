@@ -42,54 +42,63 @@ public class Connecting extends Thread {
 		} catch (IOException e1) {
 			System.out.println("IOException1.");
 		}
-		 while (true) {
-		try {
+		while (true) {
+			try {
 
-			object = myInput.readObject();
-			messageFromServer = (MessageFromServer) object;
-			System.out.println("FromServer");
-			System.out.println(messageFromServer.getTextMessage());
-			System.out.println(messageFromServer.getCurrentPlayer());
-			System.out.println(messageFromServer.getWinner());
-			System.out.println(messageFromServer.getPossibleMoves());
-			System.out.println(messageFromServer.getBoard());
-			System.out.println(messageFromServer.isGameRunning());
-			System.out.println("Row from server " + messageFromServer.getChosenRow());
+				object = myInput.readObject();
+				messageFromServer = (MessageFromServer) object;
+				System.out.println("Received from server:");
+				System.out.println(messageFromServer.getTextMessage());
+				System.out.println(messageFromServer.getCurrentPlayer());
+				System.out.println(messageFromServer.getWinner());
+				System.out.println(messageFromServer.getPossibleMoves());
+				int[][] a = messageFromServer.getBoard();
+				   for(int i = 0; i < a.length; i++)
+				   {
+				      for(int j = 0; j < a[i].length; j++)
+				      {
+				         System.out.printf("%5d ", a[i][j]);
+				      }
+				      System.out.println();
+				   }
+				
+				System.out.println(messageFromServer.isGameRunning());
+				System.out.println("Row from server " + messageFromServer.getChosenRow());
+				System.out.println("Col from server " + messageFromServer.getChosenCol());
 
-			System.out.println("Col from server " + messageFromServer.getChosenCol());
+				getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
+						messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
+						messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(), messageFromServer.getMyColor());
+				
+				
+			} catch (ClassNotFoundException e) {
+				System.out.println("Class not found.");
+			} catch (IOException e) {
+				System.out.println("IOException2.");
 
-
-			getDataFromServer(messageFromServer.getBoard(),messageFromServer.getChosenRow(),
-					messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
-					messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves());
-			
-
-		} catch (ClassNotFoundException e) {
-			System.out.println("Class not found.");
-		} catch (IOException e) {
-			System.out.println("IOException2.");
+			}
 
 		}
-
-		 }
 
 	}
 
 	private void getDataFromServer(int[][] board, int chosenRow, int chosenCol, boolean gameRunning, int currentPlayer,
-			CheckersMove[] possibleMoves) {
+			CheckersMove[] possibleMoves, int myColor) {
 		GameFlowClient.setBoard(board);
 		GameFlowClient.setChosenRow(chosenRow);
 		GameFlowClient.setChosenCol(chosenCol);
 		GameFlowClient.setGameRunning(gameRunning);
 		GameFlowClient.setCurrentPlayer(currentPlayer);
 		GameFlowClient.setPossibleMoves(possibleMoves);
+		GameFlowClient.setMyColor(myColor);
+
 		System.out.println("OnClient");
 		System.out.println(GameFlowClient.getBoard());
-//		System.out.println(GameFlowClient.get);
-//		System.out.println(messageFromServer.getWinner());
-//		System.out.println(messageFromServer.getPossibleMoves());
-//		System.out.println(messageFromServer.getBoard());
-//		System.out.println(messageFromServer.isGameRunning());
+		// System.out.println(GameFlowClient.get);
+		// System.out.println(messageFromServer.getWinner());
+		// System.out.println(messageFromServer.getPossibleMoves());
+		// System.out.println(messageFromServer.getBoard());
+		// System.out.println(messageFromServer.isGameRunning());
 
 	}
 
@@ -103,9 +112,7 @@ public class Connecting extends Thread {
 		prepareMessageToServer(row, col);
 		try {
 			myOutput.reset();
-
 			myOutput.writeObject(messageToServer);
-			System.out.println("kkkkk");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

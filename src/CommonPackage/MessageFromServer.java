@@ -21,7 +21,17 @@ public class MessageFromServer implements Serializable {
 	private int chosenRow;
 	private int chosenCol;
 	private int winner; // contain winner player (BLACK or WHITE - 0, 1)
+	private int myColor;
+
 	private String textMessage;
+
+	public int getMyColor() {
+		return myColor;
+	}
+
+	public void setMyColor(int myColor) {
+		this.myColor = myColor;
+	}
 
 	public int getChosenRow() {
 		return chosenRow;

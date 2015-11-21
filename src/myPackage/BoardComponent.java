@@ -91,7 +91,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		}
 
-		if (GameFlowClient.gameRunning) {
+		if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() == GameFlowClient.getCurrentPlayer()) {
 
 			/*
 			 * Draw a border around the pieces that can be moved.
@@ -107,7 +107,6 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			 * When checker is selected then draw a green border (selectedRow >=
 			 * 0) and red border around fields where can be moved
 			 */
-			System.out.println("Chosen Row " + GameFlowClient.chosenRow);
 			if (GameFlowClient.chosenRow >= 0) {
 				g.setColor(Color.green);
 				g.drawRect(GameFlowClient.chosenCol * 50, GameFlowClient.chosenRow * 50, 49, 49);
@@ -122,6 +121,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			}
 
 		}
+		repaint();
 
 	}
 

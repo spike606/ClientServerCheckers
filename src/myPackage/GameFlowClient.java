@@ -11,8 +11,17 @@ public class GameFlowClient {
 	static int currentPlayer;// contain current player (BLACK or WHITE)
 	static int chosenRow = -1;// coordinates of selected checker
 	static int chosenCol = -1;// -1 means no selected row or column
+	static int myColor;
 	
 	
+	public static int getMyColor() {
+		return myColor;
+	}
+
+	public static void setMyColor(int myColor) {
+		GameFlowClient.myColor = myColor;
+	}
+
 	// figures on the board
 	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
 	static private int[][] board = new int[8][8];// array of current board state - client side
