@@ -12,7 +12,7 @@ import CommonPackage.*;
  * MASTER - means data on the server side
  */
 
-public class Room {
+public class Match {
 
 	/*
 	 * TODO: Method to check and autohrize moves for security, to prevent
@@ -29,7 +29,7 @@ public class Room {
 
 	MessageFromClient messageFromClient;
 
-	public Room(int roomNumber) {
+	public Match(int roomNumber) {
 
 		this.roomNumber = roomNumber;
 
@@ -96,7 +96,6 @@ public class Room {
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
 								gameFlow.getWinner(), myColor);
-						System.out.println("Wyslany ");
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
 
@@ -115,7 +114,6 @@ public class Room {
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
 								gameFlow.getWinner(), myColor);
-						System.out.println("Wyslane do klienta:" + gameFlow.getChosenCol() + gameFlow.getChosenRow());
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
 

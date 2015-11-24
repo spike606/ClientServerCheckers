@@ -44,8 +44,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 	@Override
 	public void paintComponent(Graphics g) {
-		// CheckersGame.infoLabel.setText("Click START to connect and play.");
-		CheckersGame.infoLabel.setText("Make your move.");
+
 
 		// border around canvas
 		setBorder(new LineBorder(Color.black));

@@ -48,21 +48,8 @@ public class Connecting extends Thread {
 
 				object = myInput.readObject();
 				messageFromServer = (MessageFromServer) object;
-				System.out.println("Received from server:");
-				System.out.println(messageFromServer.getCurrentPlayer());
-				System.out.println(messageFromServer.getWinner());
-				System.out.println(messageFromServer.getPossibleMoves());
-				int[][] a = messageFromServer.getBoard();
-				for (int i = 0; i < a.length; i++) {
-					for (int j = 0; j < a[i].length; j++) {
-						System.out.printf("%5d ", a[i][j]);
-					}
-					System.out.println();
-				}
 
-				System.out.println(messageFromServer.isGameRunning());
-				System.out.println("Row from server " + messageFromServer.getChosenRow());
-				System.out.println("Col from server " + messageFromServer.getChosenCol());
+
 
 				getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
 						messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
@@ -71,15 +58,11 @@ public class Connecting extends Thread {
 
 				if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
 					if (messageFromServer.getWinner() == GameFlowClient.getMyColor()) {
-						 CheckersGame.infoLabel.setText("You won!");
-//						System.out.println("You won!");
 						CheckersGame.startButton.setEnabled(true);
 						CheckersGame.stopButton.setEnabled(false);
 
 						break;
 					} else {
-						 CheckersGame.infoLabel.setText("You lose!");
-//						System.out.println("You lose!");
 						CheckersGame.startButton.setEnabled(true);
 						CheckersGame.stopButton.setEnabled(false);
 
@@ -109,13 +92,7 @@ public class Connecting extends Thread {
 		GameFlowClient.setMyColor(myColor);
 		GameFlowClient.setWinner(winner);
 
-		System.out.println("OnClient");
-		System.out.println(GameFlowClient.getBoard());
-		// System.out.println(GameFlowClient.get);
-		// System.out.println(messageFromServer.getWinner());
-		// System.out.println(messageFromServer.getPossibleMoves());
-		// System.out.println(messageFromServer.getBoard());
-		// System.out.println(messageFromServer.isGameRunning());
+
 
 	}
 
