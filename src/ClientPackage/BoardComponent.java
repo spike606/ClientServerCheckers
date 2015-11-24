@@ -45,7 +45,6 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	@Override
 	public void paintComponent(Graphics g) {
 
-
 		// border around canvas
 		setBorder(new LineBorder(Color.black));
 
@@ -133,15 +132,18 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 		} else if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() != GameFlowClient.getCurrentPlayer()) {
 			CheckersGame.infoLabel.setText("Wait for opoonent's move...");
 
-		} else if (!GameFlowClient.gameRunning) {
-			if (!CheckersGame.startButton.isEnabled()) {
-				CheckersGame.infoLabel.setText("Connecting to server...");
+		} else if (!GameFlowClient.gameRunning && GameFlowClient.isTryingToConnect()) {
+			CheckersGame.infoLabel.setText("Connecting to server...");
+		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
 
-			}
-			else if(GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
-				 CheckersGame.infoLabel.setText("You won!");
+			CheckersGame.infoLabel.setText("You won!");
 
-			} else CheckersGame.infoLabel.setText("You lose!");
+		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() != GameFlowClient.getMyColor()
+				&& GameFlowClient.getWinner() != -1){
+			CheckersGame.infoLabel.setText("You lose!");
+
+		}else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() != GameFlowClient.getMyColor()){
+			CheckersGame.infoLabel.setText("");
 
 		}
 
@@ -176,7 +178,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			int col = (e.getX() / 50);
 			int row = (e.getY() / 50);
 			if (col >= 0 && col < 8 && row >= 0 && row < 8)
-				Connecting.sendClick(row, col);
+				Connecting.sendMessageToServer(row, col, GameFlowClient.isResign());
 			// GameFlowClient.makeClick(row, col);
 		}
 	}
@@ -192,10 +194,17 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == CheckersGame.startButton)
+		if (e.getSource() == CheckersGame.startButton) {
+			GameFlowClient.setTryingToConnect(true);
 			GameFlowClient.startNewGame();
+
+		}
+
 		else if (e.getSource() == CheckersGame.stopButton)
+		{
 			GameFlowClient.resignGame();
+			Connecting.sendMessageToServer(-1, -1, GameFlowClient.isResign());
+		}
 	}
 
 }

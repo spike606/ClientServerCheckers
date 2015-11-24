@@ -1,20 +1,46 @@
 package ClientPackage;
 
 import CommonPackage.*;
+import ServerPackage.GameData;
 /*
  * Class used to manage the game flow, stores game data used on client side
  */
 public class GameFlowClient {
 
 	static boolean gameRunning = false;// flag, is game in progress
+	// figures on the board
+	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
+	static private int[][] board = new int[8][8];// array of current board state - client side
 
+	static CheckersMove[] possibleMoves;// array with possible moves for current
+										// player
+
+	static boolean tryingToConnect = false;
+	static Connecting connecting;
 	static int currentPlayer;// contain current player (BLACK or WHITE)
 	static int chosenRow = -1;// coordinates of selected checker
 	static int chosenCol = -1;// -1 means no selected row or column
 	static int myColor;
-	static int winner;
+	static int winner = -1;
+	static boolean resign = false;
 	
 	
+	public static boolean isTryingToConnect() {
+		return tryingToConnect;
+	}
+
+	public static void setTryingToConnect(boolean tryingToConnect) {
+		GameFlowClient.tryingToConnect = tryingToConnect;
+	}
+
+	public static boolean isResign() {
+		return resign;
+	}
+
+	public static void setResign(boolean resign) {
+		GameFlowClient.resign = resign;
+	}
+
 	public static int getWinner() {
 		return winner;
 	}
@@ -31,15 +57,7 @@ public class GameFlowClient {
 		GameFlowClient.myColor = myColor;
 	}
 
-	// figures on the board
-	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
-	static private int[][] board = new int[8][8];// array of current board state - client side
 
-	static CheckersMove[] possibleMoves;// array with possible moves for current
-										// player
-
-	
-	static Connecting connecting;
 	public GameFlowClient() {
 
 		initializeGame();
@@ -157,21 +175,23 @@ public class GameFlowClient {
 	 * Performed after clicking button STOP
 	 */
 	static void resignGame() {
-		if (gameRunning == false) {
-			CheckersGame.infoLabel.setText("There is no game in progress!");
-			return;
-		}
-		if (currentPlayer == GameFlowClient.WHITE)
-			gameIsOver("WHITE resigns.  BLACK wins!");
-		else
-			gameIsOver("BLACK resigns.  WHITE wins!");
+//		if (gameRunning == false) {
+//			CheckersGame.infoLabel.setText("There is no game in progress!");
+//			return;
+//		}
+		resign = true;
+		
+//		if (currentPlayer == GameFlowClient.WHITE)
+//			gameIsOver("WHITE resigns.  BLACK wins!");
+//		else
+//			gameIsOver("BLACK resigns.  WHITE wins!");
 	}
 
 	private static void gameIsOver(String string) {
 		CheckersGame.infoLabel.setText(string);
-		CheckersGame.startButton.setEnabled(true);
-		CheckersGame.stopButton.setEnabled(false);
-		gameRunning = false;
+//		CheckersGame.startButton.setEnabled(true);
+//		CheckersGame.stopButton.setEnabled(false);
+//		gameRunning = false;
 	}
 
 	/*

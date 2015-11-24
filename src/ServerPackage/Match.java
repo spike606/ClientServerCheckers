@@ -108,7 +108,8 @@ public class Match {
 
 						// przetworznie klikniecia (ewentualnego ruchu, bicia
 						// itp)
-						gameFlow.makeClick(messageFromClient.getChosenRow(), messageFromClient.getChosenCol());
+						gameFlow.makeClick(messageFromClient.getChosenRow(), messageFromClient.getChosenCol(),
+								messageFromClient.isResign());
 
 						// przygotowanie odpowiedzi dla klienta i jej wyslanie
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),

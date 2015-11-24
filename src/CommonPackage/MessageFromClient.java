@@ -11,6 +11,15 @@ public class MessageFromClient implements Serializable {
 
 	private int row;
 	private int col;
+	private boolean resign;
+
+	public boolean isResign() {
+		return resign;
+	}
+
+	public void setResign(boolean resign) {
+		this.resign = resign;
+	}
 
 	public int getChosenRow() {
 		return row;

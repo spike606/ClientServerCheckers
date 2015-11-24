@@ -48,15 +48,24 @@ public class Connecting extends Thread {
 
 				object = myInput.readObject();
 				messageFromServer = (MessageFromServer) object;
-
-
+				
+				GameFlowClient.setTryingToConnect(false);
+				GameFlowClient.setResign(false);
 
 				getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
 						messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
 						messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(),
-						messageFromServer.getMyColor(),messageFromServer.getWinner());
+						messageFromServer.getMyColor(), messageFromServer.getWinner());
+				System.out.println(GameFlowClient.isResign());
 
-				if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
+				if (GameFlowClient.isResign() == true) {
+					sendMessageToServer(-1, -1, GameFlowClient.isResign());
+					CheckersGame.startButton.setEnabled(true);
+					CheckersGame.stopButton.setEnabled(false);
+					break;
+
+				}
+				else if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
 					if (messageFromServer.getWinner() == GameFlowClient.getMyColor()) {
 						CheckersGame.startButton.setEnabled(true);
 						CheckersGame.stopButton.setEnabled(false);
@@ -92,18 +101,17 @@ public class Connecting extends Thread {
 		GameFlowClient.setMyColor(myColor);
 		GameFlowClient.setWinner(winner);
 
-
-
 	}
 
-	private static void prepareMessageToServer(int row, int col) {
+	private static void prepareMessageToServer(int row, int col, boolean resign) {
 		messageToServer.setChosenCol(col);
 		messageToServer.setChosenRow(row);
+		messageToServer.setResign(resign);
 
 	}
 
-	public static void sendClick(int row, int col) {
-		prepareMessageToServer(row, col);
+	public static void sendMessageToServer(int row, int col, boolean resign) {
+		prepareMessageToServer(row, col, resign);
 		try {
 			myOutput.reset();
 			myOutput.writeObject(messageToServer);

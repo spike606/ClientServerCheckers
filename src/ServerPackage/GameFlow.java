@@ -7,8 +7,8 @@ import CommonPackage.*;
  */
 public class GameFlow {
 
-	private  boolean gameRunning = false;// flag, is game in progress
-	 private int winner = GameData.EMPTY;
+	private boolean gameRunning = false;// flag, is game in progress
+	private int winner = GameData.EMPTY;
 
 	public synchronized int getWinner() {
 		return winner;
@@ -32,10 +32,10 @@ public class GameFlow {
 	private int chosenRow = -1;// coordinates of selected checker
 	private int chosenCol = -1;// -1 means no selected row or column
 
-	 CheckersMove[] possibleMoves;// array with possible moves for current
-										// player
+	CheckersMove[] possibleMoves;// array with possible moves for current
+									// player
 
-	public synchronized int  getChosenRow() {
+	public synchronized int getChosenRow() {
 		return chosenRow;
 	}
 
@@ -112,17 +112,17 @@ public class GameFlow {
 	 * Performed after clicking button STOP
 	 */
 	void resignGame() {
-//		if (gameRunning == false) {
-//			// CheckersGame.infoLabel.setText("There is no game in progress!");
-//			return;
-//		}TODO:RESIGN
-//		if (currentPlayer == GameData.WHITE)
-//			gameIsOver("WHITE resigns.  BLACK wins!");
-//		else
-//			gameIsOver("BLACK resigns.  WHITE wins!");
+		// if (gameRunning == false) {
+		// // CheckersGame.infoLabel.setText("There is no game in progress!");
+		// return;
+		// }TODO:RESIGN
+		// if (currentPlayer == GameData.WHITE)
+		// gameIsOver("WHITE resigns. BLACK wins!");
+		// else
+		// gameIsOver("BLACK resigns. WHITE wins!");
 	}
 
-	private void gameIsOver(int  winner) {
+	private void gameIsOver(int winner) {
 		// CheckersGame.infoLabel.setText(string);
 		// CheckersGame.startButton.setEnabled(true);
 		// CheckersGame.stopButton.setEnabled(false);
@@ -133,41 +133,52 @@ public class GameFlow {
 	/*
 	 * Handle Click on board depending of current game state
 	 */
-	synchronized void  makeClick(int row, int col) {
+	synchronized void makeClick(int row, int col, boolean resign) {
 
-		/*
-		 * When no piece is selected Choose piece to move and save coordinates
-		 * to the class fields
-		 */
-		for (int i = 0; i < possibleMoves.length; i++)
-			if (possibleMoves[i].getMoveFromRow() == row && possibleMoves[i].getMoveFromCol() == col) {
-				System.out.println("piece selected");
-				chosenRow = row;
-				chosenCol = col;
-				if (currentPlayer == GameData.WHITE) {
-					// CheckersGame.infoLabel.setText("White: Make your move.");
-				} else {
-					// CheckersGame.infoLabel.setText("Black: Make your move.");
+		if (resign == true) {
+
+			if (currentPlayer == GameData.WHITE)
+				gameIsOver(GameData.BLACK);
+			else
+				gameIsOver(GameData.WHITE);
+
+		} else {
+			/*
+			 * When no piece is selected Choose piece to move and save
+			 * coordinates to the class fields
+			 */
+			for (int i = 0; i < possibleMoves.length; i++)
+				if (possibleMoves[i].getMoveFromRow() == row && possibleMoves[i].getMoveFromCol() == col) {
+					System.out.println("piece selected");
+					chosenRow = row;
+					chosenCol = col;
+					if (currentPlayer == GameData.WHITE) {
+						// CheckersGame.infoLabel.setText("White: Make your
+						// move.");
+					} else {
+						// CheckersGame.infoLabel.setText("Black: Make your
+						// move.");
+					}
+					return;
 				}
+			/*
+			 * When piece is not selected
+			 */
+			if (chosenRow < 0) {
+				// CheckersGame.infoLabel.setText("Click the piece you want to
+				// move.");
 				return;
 			}
-		/*
-		 * When piece is not selected
-		 */
-		if (chosenRow < 0) {
-			// CheckersGame.infoLabel.setText("Click the piece you want to
-			// move.");
-			return;
+			/*
+			 * Make move from selected field to another
+			 */
+			for (int i = 0; i < possibleMoves.length; i++)
+				if (possibleMoves[i].getMoveFromRow() == chosenRow && possibleMoves[i].getMoveFromCol() == chosenCol
+						&& possibleMoves[i].getMoveToRow() == row && possibleMoves[i].getMoveToCol() == col) {
+					performMove(possibleMoves[i]);
+					return;
+				}
 		}
-		/*
-		 * Make move from selected field to another
-		 */
-		for (int i = 0; i < possibleMoves.length; i++)
-			if (possibleMoves[i].getMoveFromRow() == chosenRow && possibleMoves[i].getMoveFromCol() == chosenCol
-					&& possibleMoves[i].getMoveToRow() == row && possibleMoves[i].getMoveToCol() == col) {
-				performMove(possibleMoves[i]);
-				return;
-			}
 		/*
 		 * If no then clicked was performed not in the square where can be
 		 * moved. Display info
