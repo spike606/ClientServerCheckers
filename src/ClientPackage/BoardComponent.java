@@ -138,7 +138,11 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			if (!CheckersGame.startButton.isEnabled()) {
 				CheckersGame.infoLabel.setText("Connecting to server...");
 
-			} else 	CheckersGame.infoLabel.setText("Click start to connect and play!");
+			}
+			else if(GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
+				 CheckersGame.infoLabel.setText("You won!");
+
+			} else CheckersGame.infoLabel.setText("You lose!");
 
 		}
 

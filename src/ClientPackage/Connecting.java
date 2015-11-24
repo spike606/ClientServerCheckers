@@ -8,6 +8,7 @@ import java.net.Socket;
 import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
 
 import CommonPackage.*;
+import ServerPackage.GameData;
 import ServerPackage.GameFlow;
 
 public class Connecting extends Thread {
@@ -45,7 +46,6 @@ public class Connecting extends Thread {
 		while (true) {
 			try {
 
-				
 				object = myInput.readObject();
 				messageFromServer = (MessageFromServer) object;
 				System.out.println("Received from server:");
@@ -53,24 +53,40 @@ public class Connecting extends Thread {
 				System.out.println(messageFromServer.getWinner());
 				System.out.println(messageFromServer.getPossibleMoves());
 				int[][] a = messageFromServer.getBoard();
-				   for(int i = 0; i < a.length; i++)
-				   {
-				      for(int j = 0; j < a[i].length; j++)
-				      {
-				         System.out.printf("%5d ", a[i][j]);
-				      }
-				      System.out.println();
-				   }
-				
+				for (int i = 0; i < a.length; i++) {
+					for (int j = 0; j < a[i].length; j++) {
+						System.out.printf("%5d ", a[i][j]);
+					}
+					System.out.println();
+				}
+
 				System.out.println(messageFromServer.isGameRunning());
 				System.out.println("Row from server " + messageFromServer.getChosenRow());
 				System.out.println("Col from server " + messageFromServer.getChosenCol());
 
 				getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
 						messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
-						messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(), messageFromServer.getMyColor());
-				
-				
+						messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(),
+						messageFromServer.getMyColor(),messageFromServer.getWinner());
+
+				if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
+					if (messageFromServer.getWinner() == GameFlowClient.getMyColor()) {
+						 CheckersGame.infoLabel.setText("You won!");
+//						System.out.println("You won!");
+						CheckersGame.startButton.setEnabled(true);
+						CheckersGame.stopButton.setEnabled(false);
+
+						break;
+					} else {
+						 CheckersGame.infoLabel.setText("You lose!");
+//						System.out.println("You lose!");
+						CheckersGame.startButton.setEnabled(true);
+						CheckersGame.stopButton.setEnabled(false);
+
+						break;
+					}
+				}
+
 			} catch (ClassNotFoundException e) {
 				System.out.println("Class not found.");
 			} catch (IOException e) {
@@ -83,7 +99,7 @@ public class Connecting extends Thread {
 	}
 
 	private void getDataFromServer(int[][] board, int chosenRow, int chosenCol, boolean gameRunning, int currentPlayer,
-			CheckersMove[] possibleMoves, int myColor) {
+			CheckersMove[] possibleMoves, int myColor, int winner) {
 		GameFlowClient.setBoard(board);
 		GameFlowClient.setChosenRow(chosenRow);
 		GameFlowClient.setChosenCol(chosenCol);
@@ -91,6 +107,7 @@ public class Connecting extends Thread {
 		GameFlowClient.setCurrentPlayer(currentPlayer);
 		GameFlowClient.setPossibleMoves(possibleMoves);
 		GameFlowClient.setMyColor(myColor);
+		GameFlowClient.setWinner(winner);
 
 		System.out.println("OnClient");
 		System.out.println(GameFlowClient.getBoard());

@@ -12,8 +12,17 @@ public class GameFlowClient {
 	static int chosenRow = -1;// coordinates of selected checker
 	static int chosenCol = -1;// -1 means no selected row or column
 	static int myColor;
+	static int winner;
 	
 	
+	public static int getWinner() {
+		return winner;
+	}
+
+	public static void setWinner(int winner) {
+		GameFlowClient.winner = winner;
+	}
+
 	public static int getMyColor() {
 		return myColor;
 	}

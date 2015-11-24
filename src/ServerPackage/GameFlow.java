@@ -7,7 +7,24 @@ import CommonPackage.*;
  */
 public class GameFlow {
 
-	 boolean gameRunning = false;// flag, is game in progress
+	private  boolean gameRunning = false;// flag, is game in progress
+	 private int winner = GameData.EMPTY;
+
+	public synchronized int getWinner() {
+		return winner;
+	}
+
+	public synchronized boolean isGameRunning() {
+		return gameRunning;
+	}
+
+	public synchronized void setGameRunning(boolean gameRunning) {
+		this.gameRunning = gameRunning;
+	}
+
+	public synchronized void setWinner(int winner) {
+		this.winner = winner;
+	}
 
 	GameData boardData;// object to manage game logic
 	private int currentPlayer;// contain current player (BLACK or WHITE)
@@ -95,21 +112,22 @@ public class GameFlow {
 	 * Performed after clicking button STOP
 	 */
 	void resignGame() {
-		if (gameRunning == false) {
-			// CheckersGame.infoLabel.setText("There is no game in progress!");
-			return;
-		}
-		if (currentPlayer == GameData.WHITE)
-			gameIsOver("WHITE resigns.  BLACK wins!");
-		else
-			gameIsOver("BLACK resigns.  WHITE wins!");
+//		if (gameRunning == false) {
+//			// CheckersGame.infoLabel.setText("There is no game in progress!");
+//			return;
+//		}TODO:RESIGN
+//		if (currentPlayer == GameData.WHITE)
+//			gameIsOver("WHITE resigns.  BLACK wins!");
+//		else
+//			gameIsOver("BLACK resigns.  WHITE wins!");
 	}
 
-	private void gameIsOver(String string) {
+	private void gameIsOver(int  winner) {
 		// CheckersGame.infoLabel.setText(string);
 		// CheckersGame.startButton.setEnabled(true);
 		// CheckersGame.stopButton.setEnabled(false);
 		gameRunning = false;
+		this.winner = winner;
 	}
 
 	/*
@@ -202,7 +220,7 @@ public class GameFlow {
 			currentPlayer = GameData.BLACK;
 			possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
-				gameIsOver("BLACK has no moves.  WHITE wins!");
+				gameIsOver(GameData.WHITE);
 			else if (possibleMoves[0].isMoveBeating())// possible moves are
 														// beating
 			{
@@ -217,7 +235,7 @@ public class GameFlow {
 			currentPlayer = GameData.WHITE;
 			possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
-				gameIsOver("WHITE has no moves.  BLACK wins!");
+				gameIsOver(GameData.BLACK);
 			else if (possibleMoves[0].isMoveBeating()) {
 				// CheckersGame.infoLabel.setText("WHITE: Make your move. You
 				// must beat.");
