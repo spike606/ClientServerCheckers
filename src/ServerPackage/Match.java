@@ -58,6 +58,8 @@ public class Match {
 
 		private MessageFromClient messageFromClient = new MessageFromClient();
 		private MessageFromServer messageToClient = new MessageFromServer();
+		
+		public boolean resign = false;//when exit oraz press resign
 
 		public Player(Socket mySocket, int myColor) {
 
@@ -94,8 +96,8 @@ public class Match {
 					if (gameFlow.getCurrentPlayer() == myColor && gameFlow.isGameRunning()) {
 
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
-								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
-								gameFlow.getWinner(), myColor);
+								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(),
+								gameFlow.getPossibleMoves(), gameFlow.getWinner(), myColor);
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
 
@@ -113,18 +115,26 @@ public class Match {
 
 						// przygotowanie odpowiedzi dla klienta i jej wyslanie
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
-								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
-								gameFlow.getWinner(), myColor);
+								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(),
+								gameFlow.getPossibleMoves(), gameFlow.getWinner(), myColor);
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
 
-					} else if (!gameFlow.isGameRunning() && gameFlow.getWinner() != GameData.EMPTY) {
+					} else if (!gameFlow.isGameRunning() && gameFlow.getWinner() != GameData.EMPTY) {// gdy
+																										// gra
+																										// sie
+																										// konczy
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
-								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
-								gameFlow.getWinner(), myColor);
+								gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(),
+								gameFlow.getPossibleMoves(), gameFlow.getWinner(), myColor);
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
 					}
+					
+//					if(myOpponent.resign == true){
+//						
+//					}
+					
 
 				}
 			} catch (
@@ -132,6 +142,8 @@ public class Match {
 			IOException e)
 
 			{
+				resign = true;
+				gameFlow.makeClick(-1,-1,resign);
 				System.out.println("Player died: " + e);
 			}
 		}
