@@ -2,6 +2,7 @@ package ClientPackage;
 
 import CommonPackage.*;
 import ServerPackage.GameData;
+
 /*
  * Class used to manage the game flow, stores game data used on client side
  */
@@ -10,7 +11,8 @@ public class GameFlowClient {
 	static boolean gameRunning = false;// flag, is game in progress
 	// figures on the board
 	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
-	static private int[][] board = new int[8][8];// array of current board state - client side
+	static private int[][] board = new int[8][8];// array of current board state
+													// - client side
 
 	static CheckersMove[] possibleMoves;// array with possible moves for current
 										// player
@@ -23,8 +25,7 @@ public class GameFlowClient {
 	static int myColor;
 	static int winner = -1;
 	static boolean resign = false;
-	
-	
+
 	public static boolean isTryingToConnect() {
 		return tryingToConnect;
 	}
@@ -57,7 +58,6 @@ public class GameFlowClient {
 		GameFlowClient.myColor = myColor;
 	}
 
-
 	public GameFlowClient() {
 
 		initializeGame();
@@ -77,6 +77,7 @@ public class GameFlowClient {
 		setElementsOnStart();
 
 	}
+
 	/*
 	 * Set up board on start
 	 */
@@ -96,10 +97,12 @@ public class GameFlowClient {
 			}
 		}
 	}
+
 	// get current checker on selected field
 	public static int getFieldOnBoard(int row, int col) {
 		return board[row][col];
 	}
+
 	/*
 	 * Performed after clicking button START
 	 */
@@ -111,13 +114,13 @@ public class GameFlowClient {
 			return;
 		}
 
-
-//		currentPlayer = WHITE;// white starts a game
-		//TODO:possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
-		//gameRunning = true;
+		// currentPlayer = WHITE;// white starts a game
+		// TODO:possibleMoves =
+		// boardData.getPossibleMovesForPlayer(currentPlayer);
+		// gameRunning = true;
 		CheckersGame.startButton.setEnabled(false);
 		CheckersGame.stopButton.setEnabled(true);
-		
+
 		connecting = new Connecting();
 		connecting.start();
 
@@ -175,23 +178,27 @@ public class GameFlowClient {
 	 * Performed after clicking button STOP
 	 */
 	static void resignGame() {
-//		if (gameRunning == false) {
-//			CheckersGame.infoLabel.setText("There is no game in progress!");
-//			return;
-//		}
-		resign = true;
+		// if (gameRunning == false) {
+		// CheckersGame.infoLabel.setText("There is no game in progress!");
+		// return;
+		// }
+
+
+
+			resign = true;
 		
-//		if (currentPlayer == GameFlowClient.WHITE)
-//			gameIsOver("WHITE resigns.  BLACK wins!");
-//		else
-//			gameIsOver("BLACK resigns.  WHITE wins!");
+
+		// if (currentPlayer == GameFlowClient.WHITE)
+		// gameIsOver("WHITE resigns. BLACK wins!");
+		// else
+		// gameIsOver("BLACK resigns. WHITE wins!");
 	}
 
 	private static void gameIsOver(String string) {
 		CheckersGame.infoLabel.setText(string);
-//		CheckersGame.startButton.setEnabled(true);
-//		CheckersGame.stopButton.setEnabled(false);
-//		gameRunning = false;
+		// CheckersGame.startButton.setEnabled(true);
+		// CheckersGame.stopButton.setEnabled(false);
+		// gameRunning = false;
 	}
 
 	/*
@@ -243,7 +250,7 @@ public class GameFlowClient {
 	private static void performMove(CheckersMove checkerMove) {
 
 		// make a move
-//		TODO:boardData.makeMove(checkerMove);
+		// TODO:boardData.makeMove(checkerMove);
 
 		/*
 		 * Check if second move is possible - when checker is beating and it is
@@ -251,8 +258,10 @@ public class GameFlowClient {
 		 */
 		if ((checkerMove.isMoveBeating() && !checkerMove.isMovePerformedByQueen())
 				|| checkerMove.isBeatingPerformedByQueen()) {
-//			TODO:possibleMoves = boardData.getPossibleSecondBeating(currentPlayer, checkerMove.getMoveToRow(),
-//					checkerMove.getMoveToCol());
+			// TODO:possibleMoves =
+			// boardData.getPossibleSecondBeating(currentPlayer,
+			// checkerMove.getMoveToRow(),
+			// checkerMove.getMoveToCol());
 			if (possibleMoves != null) {
 				if (currentPlayer == GameFlowClient.WHITE)
 					CheckersGame.infoLabel.setText("White:  You must beat.");
@@ -276,7 +285,8 @@ public class GameFlowClient {
 		 */
 		if (currentPlayer == GameFlowClient.WHITE) {
 			currentPlayer = GameFlowClient.BLACK;
-//			TODO:possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
+			// TODO:possibleMoves =
+			// boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
 				gameIsOver("BLACK has no moves.  WHITE wins!");
 			else if (possibleMoves[0].isMoveBeating())// possible moves are
@@ -286,7 +296,8 @@ public class GameFlowClient {
 				CheckersGame.infoLabel.setText("BLACK:  Make your move.");
 		} else {
 			currentPlayer = GameFlowClient.WHITE;
-//			TODO:possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
+			// TODO:possibleMoves =
+			// boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
 				gameIsOver("WHITE has no moves.  BLACK wins!");
 			else if (possibleMoves[0].isMoveBeating())

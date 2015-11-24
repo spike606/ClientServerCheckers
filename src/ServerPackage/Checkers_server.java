@@ -7,6 +7,8 @@ public class Checkers_server {
 
 	private static final int SERVER_PORT = 8901;
 	private static int matchNumber = 1;
+	private static int playersPair = 0;
+
 //	private static final int TIMEOUT= 10000;
 
 	public static void main(String[] args) throws IOException {
@@ -26,6 +28,7 @@ public class Checkers_server {
 
 				try{
 					// TODO: wyodrebnic klase player z klasy room
+				
 					Match.Player playerWhite = match.new Player(serversocket.accept(), GameData.WHITE);
 					System.out.println("Match #" + matchNumber + ": player #1 connected.");
 

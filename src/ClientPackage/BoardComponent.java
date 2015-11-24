@@ -99,6 +99,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 		// }
 
 		if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() == GameFlowClient.getCurrentPlayer()) {
+			CheckersGame.stopButton.setEnabled(true);
 
 			CheckersGame.infoLabel.setText("Make your move.");
 
@@ -131,9 +132,11 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		} else if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() != GameFlowClient.getCurrentPlayer()) {
 			CheckersGame.infoLabel.setText("Wait for opoonent's move...");
+			CheckersGame.stopButton.setEnabled(true);
 
 		} else if (!GameFlowClient.gameRunning && GameFlowClient.isTryingToConnect()) {
 			CheckersGame.infoLabel.setText("Connecting to server...");
+			CheckersGame.stopButton.setEnabled(false);
 		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
 
 			CheckersGame.infoLabel.setText("You won!");
@@ -202,6 +205,10 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		else if (e.getSource() == CheckersGame.stopButton)
 		{
+//			if (GameFlowClient.isTryingToConnect()) {
+//				GameFlowClient.setTryingToConnect(false);
+//				
+//			}
 			GameFlowClient.resignGame();
 			Connecting.sendMessageToServer(-1, -1, GameFlowClient.isResign());
 		}
