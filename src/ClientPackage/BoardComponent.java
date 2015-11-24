@@ -1,4 +1,4 @@
-package myPackage;
+package ClientPackage;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,10 +16,14 @@ import javax.swing.border.LineBorder;
  */
 public class BoardComponent extends JComponent implements ActionListener, MouseListener {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3949873430204060502L;
 	// board size
 	private static final int PREF_W = 400;
 	private static final int PREF_H = 400;
-	  Connecting connecting;
+	Connecting connecting;
 
 	public BoardComponent() {
 		addMouseListener(this);
@@ -40,6 +44,8 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 	@Override
 	public void paintComponent(Graphics g) {
+		// CheckersGame.infoLabel.setText("Click START to connect and play.");
+		CheckersGame.infoLabel.setText("Make your move.");
 
 		// border around canvas
 		setBorder(new LineBorder(Color.black));
@@ -91,7 +97,12 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		}
 
+		// if(GameFlowClient.gameRunning == false){
+		// }
+
 		if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() == GameFlowClient.getCurrentPlayer()) {
+
+			CheckersGame.infoLabel.setText("Make your move.");
 
 			/*
 			 * Draw a border around the pieces that can be moved.
@@ -100,8 +111,8 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 			for (int i = 0; i < GameFlowClient.possibleMoves.length; i++) {
 
-				g.drawRect(GameFlowClient.possibleMoves[i].getMoveFromCol() * 50, GameFlowClient.possibleMoves[i].getMoveFromRow() * 50, 49,
-						49);
+				g.drawRect(GameFlowClient.possibleMoves[i].getMoveFromCol() * 50,
+						GameFlowClient.possibleMoves[i].getMoveFromRow() * 50, 49, 49);
 			}
 			/*
 			 * When checker is selected then draw a green border (selectedRow >=
@@ -114,14 +125,22 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 				for (int i = 0; i < GameFlowClient.possibleMoves.length; i++) {
 					if (GameFlowClient.possibleMoves[i].getMoveFromCol() == GameFlowClient.chosenCol
 							&& GameFlowClient.possibleMoves[i].getMoveFromRow() == GameFlowClient.chosenRow) {
-						g.drawRect(GameFlowClient.possibleMoves[i].getMoveToCol() * 50, GameFlowClient.possibleMoves[i].getMoveToRow() * 50,
-								49, 49);
+						g.drawRect(GameFlowClient.possibleMoves[i].getMoveToCol() * 50,
+								GameFlowClient.possibleMoves[i].getMoveToRow() * 50, 49, 49);
 					}
 				}
 			}
 
+		} else if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() != GameFlowClient.getCurrentPlayer()) {
+			CheckersGame.infoLabel.setText("Wait for opoonent's move...");
+
+		} else if (!GameFlowClient.gameRunning) {
+			if (!CheckersGame.startButton.isEnabled()) {
+				CheckersGame.infoLabel.setText("Connecting to server...");
+
+			} else 	CheckersGame.infoLabel.setText("Click start to connect and play!");
+
 		}
-		repaint();
 
 	}
 
@@ -144,7 +163,7 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	}
 
 	/*
-	 * Get coordinates of chosen checker and  react
+	 * Get coordinates of chosen checker and react
 	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -154,8 +173,8 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			int col = (e.getX() / 50);
 			int row = (e.getY() / 50);
 			if (col >= 0 && col < 8 && row >= 0 && row < 8)
-				Connecting.sendClick(row,col);
-				//GameFlowClient.makeClick(row, col);
+				Connecting.sendClick(row, col);
+			// GameFlowClient.makeClick(row, col);
 		}
 	}
 

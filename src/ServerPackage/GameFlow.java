@@ -7,7 +7,7 @@ import CommonPackage.*;
  */
 public class GameFlow {
 
-	static boolean gameRunning = false;// flag, is game in progress
+	 boolean gameRunning = false;// flag, is game in progress
 
 	GameData boardData;// object to manage game logic
 	private int currentPlayer;// contain current player (BLACK or WHITE)
@@ -15,34 +15,34 @@ public class GameFlow {
 	private int chosenRow = -1;// coordinates of selected checker
 	private int chosenCol = -1;// -1 means no selected row or column
 
-	static CheckersMove[] possibleMoves;// array with possible moves for current
+	 CheckersMove[] possibleMoves;// array with possible moves for current
 										// player
 
-	public int getChosenRow() {
+	public synchronized int  getChosenRow() {
 		return chosenRow;
 	}
 
-	public int getCurrentPlayer() {
+	public synchronized int getCurrentPlayer() {
 		return currentPlayer;
 	}
 
-	public void setCurrentPlayer(int currentPlayer) {
+	public synchronized void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 
-	public void setChosenRow(int chosenRow) {
+	public synchronized void setChosenRow(int chosenRow) {
 		this.chosenRow = chosenRow;
 	}
 
-	public int getChosenCol() {
+	public synchronized int getChosenCol() {
 		return chosenCol;
 	}
 
-	public void setChosenCol(int chosenCol) {
+	public synchronized void setChosenCol(int chosenCol) {
 		this.chosenCol = chosenCol;
 	}
 
-	public CheckersMove[] getPossibleMoves() {
+	public synchronized CheckersMove[] getPossibleMoves() {
 		return possibleMoves;
 	}
 
@@ -115,7 +115,7 @@ public class GameFlow {
 	/*
 	 * Handle Click on board depending of current game state
 	 */
-	void makeClick(int row, int col) {
+	synchronized void  makeClick(int row, int col) {
 
 		/*
 		 * When no piece is selected Choose piece to move and save coordinates
@@ -162,7 +162,7 @@ public class GameFlow {
 	/*
 	 * Make specific move
 	 */
-	private void performMove(CheckersMove checkerMove) {
+	synchronized private void performMove(CheckersMove checkerMove) {
 
 		// make a move
 		boardData.makeMove(checkerMove);

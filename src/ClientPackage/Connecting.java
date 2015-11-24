@@ -1,4 +1,4 @@
-package myPackage;
+package ClientPackage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -45,10 +45,10 @@ public class Connecting extends Thread {
 		while (true) {
 			try {
 
+				
 				object = myInput.readObject();
 				messageFromServer = (MessageFromServer) object;
 				System.out.println("Received from server:");
-				System.out.println(messageFromServer.getTextMessage());
 				System.out.println(messageFromServer.getCurrentPlayer());
 				System.out.println(messageFromServer.getWinner());
 				System.out.println(messageFromServer.getPossibleMoves());

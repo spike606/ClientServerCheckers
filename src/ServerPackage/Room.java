@@ -37,6 +37,12 @@ public class Room {
 
 	}
 
+	private synchronized void resetChosenField() {
+		gameFlow.setChosenCol(-1);
+		gameFlow.setChosenRow(-1);
+
+	}
+
 	/*
 	 * Player class Constructs a handler thread for a given socket and mark
 	 * initializes the stream fields, displays the first two welcoming messages.
@@ -89,21 +95,46 @@ public class Room {
 
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 								gameFlow.getChosenRow(), true, gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
-								GameData.EMPTY, myColor, "First message");
+								GameData.EMPTY, myColor, "Your move.");
+						System.out.println("Wyslany ");
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
+
+
+						// odebranie klikniecia od klienta
 						try {
 							messageFromClient = (MessageFromClient) myInput.readObject();
 						} catch (ClassNotFoundException e) {
 							e.printStackTrace();
 						}
 
+						// przetworznie klikniecia (ewentualnego ruchu, bicia
+						// itp)
 						gameFlow.makeClick(messageFromClient.getChosenRow(), messageFromClient.getChosenCol());
+
+						// przygotowanie odpowiedzi dla klienta i jej wyslanie
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 								gameFlow.getChosenRow(), true, gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
-								GameData.EMPTY, myColor, "First message");
+								GameData.EMPTY, myColor, "Your move.");
+						System.out.println("Wyslane do klienta:" + gameFlow.getChosenCol() + gameFlow.getChosenRow());
 						myOutput.reset();
 						myOutput.writeObject(messageToClient);
+						
+
+						
+						// gameFlow.setChosenCol(-1);
+						// gameFlow.setChosenRow(-1);
+						// prepareMessageToClient(gameFlow.boardData.getBoard(),
+						// gameFlow.getChosenCol(),
+						// gameFlow.getChosenRow(), true,
+						// gameFlow.getCurrentPlayer(),
+						// gameFlow.getPossibleMoves(),
+						// GameData.EMPTY, myColor, "First message");
+						// myOutput.reset();
+						// myOutput.writeObject(messageToClient);
+						// flag = true;
+						//
+						// }
 						// try {
 						// messageFromClient = (MessageFromClient)
 						// myInput.readObject();
@@ -120,39 +151,51 @@ public class Room {
 						// GameData.EMPTY, "First message");
 						// myOutput.reset();
 						// myOutput.writeObject(messageToClient);
-
 					}
+					// } else {
+					// prepareMessageToClient(gameFlow.boardData.getBoard(),
+					// gameFlow.getChosenCol(),
+					// gameFlow.getChosenRow(), true,
+					// gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
+					// GameData.EMPTY, myColor, "First message");
+					// myOutput.reset();
+					// myOutput.writeObject(messageToClient);
+					// }
 
 				}
-			} catch (IOException e) {
-				System.out.println("Player died: " + e);
-			}
+			}catch(
+
+		IOException e)
+
+		{
+			System.out.println("Player died: " + e);
 		}
-
-		@SuppressWarnings("unused")
-		private void prepareMessageToClient(int[][] board, int chosenCol, int chosenRow, boolean gameRunning,
-				int currentPlayer, CheckersMove[] possibleMoves, int winner, int myColor, String textMessage) {
-
-			messageToClient.setBoard(board);
-			messageToClient.setChosenCol(chosenCol);
-			messageToClient.setChosenRow(chosenRow);
-			messageToClient.setGameRunning(gameRunning);
-			messageToClient.setCurrentPlayer(currentPlayer);
-			messageToClient.setPossibleMoves(possibleMoves);
-			messageToClient.setWinner(winner);
-			messageToClient.setMyColor(myColor);
-			messageToClient.setTextMessage(textMessage);
-
-		}
-
-		// private void getMessageFromClient(MessageFromClient
-		// messageFromClient) {
-		// gameFlow.get = messageFromClient.getChosenRow();
-		// gameFlow.chosenCol = messageFromClient.getChosenCol();
-		// System.out.println(gameFlow.chosenRow);
-		// System.out.println(gameFlow.chosenCol);
-		//
-		// }
 	}
+
+	@SuppressWarnings("unused")
+	synchronized private void prepareMessageToClient(int[][] board, int chosenCol, int chosenRow, boolean gameRunning,
+			int currentPlayer, CheckersMove[] possibleMoves, int winner, int myColor, String textMessage) {
+
+		messageToClient.setBoard(board);
+		messageToClient.setChosenCol(chosenCol);
+		messageToClient.setChosenRow(chosenRow);
+		messageToClient.setGameRunning(gameRunning);
+		messageToClient.setCurrentPlayer(currentPlayer);
+		messageToClient.setPossibleMoves(possibleMoves);
+		messageToClient.setWinner(winner);
+		messageToClient.setMyColor(myColor);
+		messageToClient.setTextMessage(textMessage);
+
+	}
+
+	// private void getMessageFromClient(MessageFromClient
+	// messageFromClient) {
+	// gameFlow.get = messageFromClient.getChosenRow();
+	// gameFlow.chosenCol = messageFromClient.getChosenCol();
+	// System.out.println(gameFlow.chosenRow);
+	// System.out.println(gameFlow.chosenCol);
+	//
+	// }
+}
 
 }

@@ -1,4 +1,4 @@
-package myPackage;
+package ClientPackage;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -76,9 +76,9 @@ public class CheckersGame {
 		theBox.add(Box.createVerticalStrut(30));// okreslony odstep
 		theBox.add(stopButton);
 
+		addComp(thePanel, infoLabel, 0, 0, 1, 1, GridBagConstraints.SOUTH, GridBagConstraints.NONE);
 		addComp(thePanel, boardComponent, 0, 0, 1, 1, GridBagConstraints.WEST, GridBagConstraints.NONE);
 		addComp(thePanel, theBox, 0, 0, 1, 1, GridBagConstraints.EAST, GridBagConstraints.NONE);
-		addComp(thePanel, infoLabel, 0, 0, 1, 1, GridBagConstraints.SOUTH, GridBagConstraints.NONE);
 
 	}
 

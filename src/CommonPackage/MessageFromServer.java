@@ -23,7 +23,6 @@ public class MessageFromServer implements Serializable {
 	private int winner; // contain winner player (BLACK or WHITE - 0, 1)
 	private int myColor;
 
-	private String textMessage;
 
 	public int getMyColor() {
 		return myColor;
@@ -51,14 +50,6 @@ public class MessageFromServer implements Serializable {
 
 	public int[][] getBoard() {
 		return board;
-	}
-
-	public String getTextMessage() {
-		return textMessage;
-	}
-
-	public void setTextMessage(String textMessage) {
-		this.textMessage = textMessage;
 	}
 
 	public int getWinner() {

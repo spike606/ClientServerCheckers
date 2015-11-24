@@ -1,4 +1,4 @@
-package myPackage;
+package ClientPackage;
 
 import CommonPackage.*;
 /*
@@ -85,9 +85,8 @@ public class GameFlowClient {
 		}
 
 
-		currentPlayer = WHITE;// white starts a game
+//		currentPlayer = WHITE;// white starts a game
 		//TODO:possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
-		CheckersGame.infoLabel.setText("WHITE: make your move.");
 		//gameRunning = true;
 		CheckersGame.startButton.setEnabled(false);
 		CheckersGame.stopButton.setEnabled(true);
