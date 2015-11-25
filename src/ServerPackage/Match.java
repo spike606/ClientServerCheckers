@@ -58,7 +58,7 @@ public class Match {
 					System.out.println("Player out!: " + e1);
 					resign = true;
 					gameFlow.makeClick(-1, -1, resign);
-					System.out.println("Player " + getMyColor() + " died. Match number: " + matchNumber);
+//					System.out.println("Player " + getMyColor() + " died. Match number: " + matchNumber);
 					threadRunning = false;
 				}
 
@@ -112,15 +112,24 @@ public class Match {
 						// when user is out, opponent wins
 						resign = true;
 						gameFlow.makeClick(-1, -1, resign);
-						System.out.println("Player " + getMyColor() + " died. Match number: " + matchNumber);
+//						System.out.println("Player " + getMyColor() + " died. Match number: " + matchNumber);
 						threadRunning = false;
 
 					} catch (ClassNotFoundException e) {
 						resign = true;
 						gameFlow.makeClick(-1, -1, resign);
-						System.out.println("Class not found error. Player " + getMyColor() + " died. Match number: "
-								+ matchNumber);
+//						System.out.println("Class not found error. Player " + getMyColor() + " died. Match number: "
+//								+ matchNumber);
 						threadRunning = false;
+					}
+					finally{
+					    	try {
+						    	myOutput.close();
+								myInput.close();
+							} catch (IOException e) {
+//								System.out.println("Error during closing streams!");
+							}
+
 					}
 				}
 			}

@@ -29,7 +29,7 @@ public class CheckersGame {
 	static JButton startButton = new JButton("Start"); // Button to start a new
 														// // game.
 	static JButton stopButton = new JButton("Stop"); // Button to stop the game.
-	static JLabel infoLabel = new JLabel("Start the game");// label to display
+	static JLabel infoLabel = new JLabel();// label to display
 															// // messages
 
 	public static void main(String[] args) {

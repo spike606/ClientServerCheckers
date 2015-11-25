@@ -29,7 +29,7 @@ public class CheckersServer {
 
 					playerWhite.start();
 					playerBlack.start();
-					System.out.println(java.lang.Thread.activeCount());
+//					System.out.println(java.lang.Thread.activeCount());
 					matchNumber++;
 				} catch (IOException e) {
 					System.out.println("IOError");

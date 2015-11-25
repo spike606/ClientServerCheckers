@@ -106,7 +106,6 @@ public class GameFlow {
 			 */
 			for (int i = 0; i < possibleMoves.length; i++)
 				if (possibleMoves[i].getMoveFromRow() == row && possibleMoves[i].getMoveFromCol() == col) {
-					System.out.println("piece selected");
 					chosenRow = row;
 					chosenCol = col;
 					return;

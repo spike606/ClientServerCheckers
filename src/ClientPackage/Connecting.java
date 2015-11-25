@@ -20,10 +20,11 @@ public class Connecting extends Thread {
 	private ObjectInputStream myInput;
 	private static ObjectOutputStream myOutput;
 
-	Object object;
+	private Object object;
 
 	private static MessageFromClient messageToServer;
 	private MessageFromServer messageFromServer;
+
 	static boolean connectedToServer = true;
 	private volatile boolean threadRunning = true;
 
@@ -38,13 +39,13 @@ public class Connecting extends Thread {
 			try {
 				// Setup networking
 				connectedToServer = true;
-				mySocket = new Socket("localhost", SERVER_PORT);
+				mySocket = new Socket(HOST_NAME, SERVER_PORT);
 				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
-				 myOutput.flush();
+				myOutput.flush();
 				myInput = new ObjectInputStream(mySocket.getInputStream());
 
 			} catch (IOException e1) {
-				System.out.println("IOException1.");
+				// System.out.println("IOException1.");
 				GameFlowClient.setTryingToConnect(false);
 				connectedToServer = false;
 				CheckersGame.startButton.setEnabled(true);
@@ -64,7 +65,7 @@ public class Connecting extends Thread {
 							messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
 							messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(),
 							messageFromServer.getMyColor(), messageFromServer.getWinner());
-					System.out.println(GameFlowClient.isResign());
+					// System.out.println(GameFlowClient.isResign());
 
 					if (GameFlowClient.isResign() == true) {
 						sendMessageToServer(-1, -1, GameFlowClient.isResign());
@@ -87,14 +88,22 @@ public class Connecting extends Thread {
 					}
 
 				} catch (ClassNotFoundException e) {
-					System.out.println("Class not found.");
+					// System.out.println("Class not found.");
 				} catch (IOException e) {
-					System.out.println("IOException2.");
+					// System.out.println("IOException2.");
 
 				}
 
 			}
 			threadRunning = false;
+			try {
+				myOutput.close();
+				myInput.close();
+				mySocket.close();
+			} catch (IOException e) {
+				// System.out.println("Error during closing streams!");
+
+			}
 		}
 
 	}
@@ -125,8 +134,7 @@ public class Connecting extends Thread {
 			myOutput.reset();
 			myOutput.writeObject(messageToServer);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 
 	}

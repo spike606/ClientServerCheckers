@@ -9,7 +9,6 @@ public class ListenForMouse implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		CheckersGame.infoLabel.setText("Click \"New Game\" to start a new game.");
 	}
 
 	@Override

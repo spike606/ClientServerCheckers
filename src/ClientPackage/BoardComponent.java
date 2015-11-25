@@ -16,9 +16,6 @@ import javax.swing.border.LineBorder;
  */
 public class BoardComponent extends JComponent implements ActionListener, MouseListener {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3949873430204060502L;
 	// board size
 	private static final int PREF_W = 400;
@@ -36,8 +33,8 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 	public Dimension getPreferredSize() {// Necessary method to display
 											// component!
 		/**
-		 * Try overriding public Dimension getPreferredSize() in your class so
-		 * that GridBagLayout knows how big to make your panel.
+		 * Overriding public Dimension getPreferredSize() in your class so that
+		 * GridBagLayout knows how big to make your panel.
 		 */
 		return new Dimension(PREF_W, PREF_H);
 	}
@@ -95,12 +92,9 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 
 		}
 
-		// if(GameFlowClient.gameRunning == false){
-		// }
-
 		if (GameFlowClient.gameRunning && GameFlowClient.getMyColor() == GameFlowClient.getCurrentPlayer()) {
+		
 			CheckersGame.stopButton.setEnabled(true);
-
 			CheckersGame.infoLabel.setText("Make your move.");
 
 			/*
@@ -137,19 +131,18 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 		} else if (!GameFlowClient.gameRunning && GameFlowClient.isTryingToConnect()) {
 			CheckersGame.infoLabel.setText("Connecting to server...");
 			CheckersGame.stopButton.setEnabled(false);
-		}
-		else if (!GameFlowClient.gameRunning && Connecting.connectedToServer == false) {
+		} else if (!GameFlowClient.gameRunning && Connecting.connectedToServer == false) {
 			CheckersGame.infoLabel.setText("Can't connect to server!");
 			CheckersGame.stopButton.setEnabled(false);
-		}else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
+		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() == GameFlowClient.getMyColor()) {
 
 			CheckersGame.infoLabel.setText("You won!");
 
 		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() != GameFlowClient.getMyColor()
-				&& GameFlowClient.getWinner() != -1){
+				&& GameFlowClient.getWinner() != -1) {
 			CheckersGame.infoLabel.setText("You lose!");
 
-		}else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() != GameFlowClient.getMyColor()){
+		} else if (!GameFlowClient.gameRunning && GameFlowClient.getWinner() != GameFlowClient.getMyColor()) {
 			CheckersGame.infoLabel.setText("");
 
 		}
@@ -186,7 +179,6 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 			int row = (e.getY() / 50);
 			if (col >= 0 && col < 8 && row >= 0 && row < 8)
 				Connecting.sendMessageToServer(row, col, GameFlowClient.isResign());
-			// GameFlowClient.makeClick(row, col);
 		}
 	}
 
@@ -204,15 +196,9 @@ public class BoardComponent extends JComponent implements ActionListener, MouseL
 		if (e.getSource() == CheckersGame.startButton) {
 			GameFlowClient.setTryingToConnect(true);
 			GameFlowClient.startNewGame();
-
 		}
 
-		else if (e.getSource() == CheckersGame.stopButton)
-		{
-//			if (GameFlowClient.isTryingToConnect()) {
-//				GameFlowClient.setTryingToConnect(false);
-//				
-//			}
+		else if (e.getSource() == CheckersGame.stopButton) {
 			GameFlowClient.resignGame();
 			Connecting.sendMessageToServer(-1, -1, GameFlowClient.isResign());
 		}
