@@ -23,7 +23,6 @@ public class Checkers_server {
 			while (true) {
 
 				Match match = new Match(matchNumber);
-				System.out.println("Match number " + matchNumber + " created.");
 				System.out.println("Waiting for players...");
 
 				try{
@@ -37,8 +36,6 @@ public class Checkers_server {
 
 					playerWhite.setOpponent(playerBlack);
 					playerBlack.setOpponent(playerWhite);
-					// TODO:room.setCurrentPlayerMaster(playerWhite);
-//					room.gameFlow.startNewGame();
 					playerWhite.start();
 					playerBlack.start();
 

@@ -24,6 +24,7 @@ public class Connecting extends Thread {
 
 	private static MessageFromClient messageToServer;
 	private MessageFromServer messageFromServer;
+	static  boolean connectedToServer = true;
 
 	public Connecting() {
 		messageToServer = new MessageFromClient();
@@ -37,13 +38,17 @@ public class Connecting extends Thread {
 
 			mySocket = new Socket("localhost", SERVER_PORT);
 			myOutput = new ObjectOutputStream(mySocket.getOutputStream());
-			myOutput.flush();
+			//myOutput.flush();
 			myInput = new ObjectInputStream(mySocket.getInputStream());
 
 		} catch (IOException e1) {
 			System.out.println("IOException1.");
+			GameFlowClient.setTryingToConnect(false);
+			connectedToServer = false;
+			CheckersGame.startButton.setEnabled(true);
+			CheckersGame.stopButton.setEnabled(false);
 		}
-		while (true) {
+		while (connectedToServer) {
 			try {
 
 				object = myInput.readObject();
