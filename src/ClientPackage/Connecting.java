@@ -24,7 +24,8 @@ public class Connecting extends Thread {
 
 	private static MessageFromClient messageToServer;
 	private MessageFromServer messageFromServer;
-	static  boolean connectedToServer = true;
+	static boolean connectedToServer = true;
+	private volatile boolean threadRunning = true;
 
 	public Connecting() {
 		messageToServer = new MessageFromClient();
@@ -33,64 +34,67 @@ public class Connecting extends Thread {
 
 	@Override
 	public void run() {
-		try {
-			// Setup networking
-
-			mySocket = new Socket("localhost", SERVER_PORT);
-			myOutput = new ObjectOutputStream(mySocket.getOutputStream());
-			//myOutput.flush();
-			myInput = new ObjectInputStream(mySocket.getInputStream());
-
-		} catch (IOException e1) {
-			System.out.println("IOException1.");
-			GameFlowClient.setTryingToConnect(false);
-			connectedToServer = false;
-			CheckersGame.startButton.setEnabled(true);
-			CheckersGame.stopButton.setEnabled(false);
-		}
-		while (connectedToServer) {
+		while (threadRunning) {
 			try {
+				// Setup networking
+				connectedToServer = true;
+				mySocket = new Socket("localhost", SERVER_PORT);
+				myOutput = new ObjectOutputStream(mySocket.getOutputStream());
+				 myOutput.flush();
+				myInput = new ObjectInputStream(mySocket.getInputStream());
 
-				object = myInput.readObject();
-				messageFromServer = (MessageFromServer) object;
-				
+			} catch (IOException e1) {
+				System.out.println("IOException1.");
 				GameFlowClient.setTryingToConnect(false);
-				GameFlowClient.setResign(false);
-
-				getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
-						messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
-						messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(),
-						messageFromServer.getMyColor(), messageFromServer.getWinner());
-				System.out.println(GameFlowClient.isResign());
-
-				if (GameFlowClient.isResign() == true) {
-					sendMessageToServer(-1, -1, GameFlowClient.isResign());
-					CheckersGame.startButton.setEnabled(true);
-					CheckersGame.stopButton.setEnabled(false);
-					break;
-
-				}
-				else if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
-					if (messageFromServer.getWinner() == GameFlowClient.getMyColor()) {
-						CheckersGame.startButton.setEnabled(true);
-						CheckersGame.stopButton.setEnabled(false);
-
-						break;
-					} else {
-						CheckersGame.startButton.setEnabled(true);
-						CheckersGame.stopButton.setEnabled(false);
-
-						break;
-					}
-				}
-
-			} catch (ClassNotFoundException e) {
-				System.out.println("Class not found.");
-			} catch (IOException e) {
-				System.out.println("IOException2.");
-
+				connectedToServer = false;
+				CheckersGame.startButton.setEnabled(true);
+				CheckersGame.stopButton.setEnabled(false);
 			}
 
+			while (connectedToServer) {
+				try {
+
+					object = myInput.readObject();
+					messageFromServer = (MessageFromServer) object;
+
+					GameFlowClient.setTryingToConnect(false);
+					GameFlowClient.setResign(false);
+
+					getDataFromServer(messageFromServer.getBoard(), messageFromServer.getChosenRow(),
+							messageFromServer.getChosenCol(), messageFromServer.isGameRunning(),
+							messageFromServer.getCurrentPlayer(), messageFromServer.getPossibleMoves(),
+							messageFromServer.getMyColor(), messageFromServer.getWinner());
+					System.out.println(GameFlowClient.isResign());
+
+					if (GameFlowClient.isResign() == true) {
+						sendMessageToServer(-1, -1, GameFlowClient.isResign());
+						CheckersGame.startButton.setEnabled(true);
+						CheckersGame.stopButton.setEnabled(false);
+						break;
+
+					} else if (messageFromServer.getWinner() != GameFlowClient.EMPTY) {
+						if (messageFromServer.getWinner() == GameFlowClient.getMyColor()) {
+							CheckersGame.startButton.setEnabled(true);
+							CheckersGame.stopButton.setEnabled(false);
+
+							break;
+						} else {
+							CheckersGame.startButton.setEnabled(true);
+							CheckersGame.stopButton.setEnabled(false);
+
+							break;
+						}
+					}
+
+				} catch (ClassNotFoundException e) {
+					System.out.println("Class not found.");
+				} catch (IOException e) {
+					System.out.println("IOException2.");
+
+				}
+
+			}
+			threadRunning = false;
 		}
 
 	}
