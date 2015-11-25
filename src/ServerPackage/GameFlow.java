@@ -7,27 +7,11 @@ import CommonPackage.*;
  */
 public class GameFlow {
 
-	private boolean gameRunning = false;// flag, is game in progress
+	private boolean gameRunning = false;// flag
 	private int winner = GameData.EMPTY;
 
-	public synchronized int getWinner() {
-		return winner;
-	}
-
-	public synchronized boolean isGameRunning() {
-		return gameRunning;
-	}
-
-	public synchronized void setGameRunning(boolean gameRunning) {
-		this.gameRunning = gameRunning;
-	}
-
-	public synchronized void setWinner(int winner) {
-		this.winner = winner;
-	}
-
-	GameData boardData;// object to manage game logic
-	private int currentPlayer;// contain current player (BLACK or WHITE)
+	GameData boardData;// object containing current data of board
+	private int currentPlayer;// BLACK or WHITE
 
 	private int chosenRow = -1;// coordinates of selected checker
 	private int chosenCol = -1;// -1 means no selected row or column
@@ -63,21 +47,31 @@ public class GameFlow {
 		return possibleMoves;
 	}
 
+	public synchronized int getWinner() {
+		return winner;
+	}
+
+	public synchronized boolean isGameRunning() {
+		return gameRunning;
+	}
+
+	public synchronized void setGameRunning(boolean gameRunning) {
+		this.gameRunning = gameRunning;
+	}
+
+	public synchronized void setWinner(int winner) {
+		this.winner = winner;
+	}
+
 	public GameFlow() {
 
 		initializeGame();
 
 	}
 
-	/*
-	 * Running when program starts, needed to draw view sets white as current
-	 * player on start
-	 */
 	private void initializeGame() {
 		if (gameRunning == true) {
 			// This should not be possible
-			// TODO:CheckersGame.infoLabel.setText("Finish the current game
-			// first!");
 			return;
 		}
 		boardData = new GameData();
@@ -87,45 +81,8 @@ public class GameFlow {
 
 	}
 
-	/*
-	 * Performed after clicking button START preparing first message to clients
-	 * when gme starts
-	 */
-	// void startNewGame() {
-	//
-	// if (gameRunning == true) {
-	// // This should not be possible
-	// // CheckersGame.infoLabel.setText("Finish the current game first!");
-	// return;
-	// }
-
-	// prepare first message to clients
-	// messageToClient.setTextMessage("Hello");
-
-	// TODO:CheckersGame.infoLabel.setText("WHITE: make your move.");
-	// CheckersGame.startButton.setEnabled(false);
-	// CheckersGame.stopButton.setEnabled(true);
-
-	// }
-
-	/*
-	 * Performed after clicking button STOP
-	 */
-	void resignGame() {
-		// if (gameRunning == false) {
-		// // CheckersGame.infoLabel.setText("There is no game in progress!");
-		// return;
-		// }TODO:RESIGN
-		// if (currentPlayer == GameData.WHITE)
-		// gameIsOver("WHITE resigns. BLACK wins!");
-		// else
-		// gameIsOver("BLACK resigns. WHITE wins!");
-	}
-
 	private void gameIsOver(int winner) {
-		// CheckersGame.infoLabel.setText(string);
-		// CheckersGame.startButton.setEnabled(true);
-		// CheckersGame.stopButton.setEnabled(false);
+
 		gameRunning = false;
 		this.winner = winner;
 	}
@@ -135,7 +92,7 @@ public class GameFlow {
 	 */
 	synchronized void makeClick(int row, int col, boolean resign) {
 
-		if (resign == true) {
+		if (resign == true) {// when player resign
 
 			if (currentPlayer == GameData.WHITE)
 				gameIsOver(GameData.BLACK);
@@ -152,21 +109,12 @@ public class GameFlow {
 					System.out.println("piece selected");
 					chosenRow = row;
 					chosenCol = col;
-					if (currentPlayer == GameData.WHITE) {
-						// CheckersGame.infoLabel.setText("White: Make your
-						// move.");
-					} else {
-						// CheckersGame.infoLabel.setText("Black: Make your
-						// move.");
-					}
 					return;
 				}
 			/*
 			 * When piece is not selected
 			 */
 			if (chosenRow < 0) {
-				// CheckersGame.infoLabel.setText("Click the piece you want to
-				// move.");
 				return;
 			}
 			/*
@@ -179,13 +127,6 @@ public class GameFlow {
 					return;
 				}
 		}
-		/*
-		 * If no then clicked was performed not in the square where can be
-		 * moved. Display info
-		 */
-		// CheckersGame.infoLabel.setText("Click the square you want to move
-		// to.");
-
 	}
 
 	/*
@@ -205,12 +146,6 @@ public class GameFlow {
 			possibleMoves = boardData.getPossibleSecondBeating(currentPlayer, checkerMove.getMoveToRow(),
 					checkerMove.getMoveToCol());
 			if (possibleMoves != null) {
-				if (currentPlayer == GameData.WHITE) {
-					// CheckersGame.infoLabel.setText("White: You must beat.");
-				} else if (currentPlayer == GameData.BLACK) {
-					// CheckersGame.infoLabel.setText("Black: You must beat.");
-
-				}
 				chosenRow = checkerMove.getMoveToRow(); // Since only one piece
 														// can be moved, select
 														// it.
@@ -232,34 +167,16 @@ public class GameFlow {
 			possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
 				gameIsOver(GameData.WHITE);
-			else if (possibleMoves[0].isMoveBeating())// possible moves are
-														// beating
-			{
-				// CheckersGame.infoLabel.setText("BLACK: Make your move. You
-				// must beat.");
 
-			} else {
-				// CheckersGame.infoLabel.setText("BLACK: Make your move.");
-
-			}
 		} else {
 			currentPlayer = GameData.WHITE;
 			possibleMoves = boardData.getPossibleMovesForPlayer(currentPlayer);
 			if (possibleMoves == null)
 				gameIsOver(GameData.BLACK);
-			else if (possibleMoves[0].isMoveBeating()) {
-				// CheckersGame.infoLabel.setText("WHITE: Make your move. You
-				// must beat.");
-
-			} else {
-				// CheckersGame.infoLabel.setText("WHITE: Make your move.");
-
-			}
 		}
 		/*
 		 * Set default values - player has not yet selected a checker to move
 		 */
-
 		chosenRow = -1;
 		chosenCol = -1;
 

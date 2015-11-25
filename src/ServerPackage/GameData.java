@@ -13,7 +13,6 @@ public class GameData {
 	static final int EMPTY = 0, WHITE = 1, WHITE_QUEEN = 2, BLACK = 3, BLACK_QUEEN = 4;
 	private int[][] board = new int[8][8];// array of current board state
 
-	// needed when dening message
 	public int[][] getBoard() {
 		return board;
 	}
@@ -76,7 +75,7 @@ public class GameData {
 	}
 
 	private void removeOpponentCheckerIfBeating(CheckersMove move) {// checks
-																	// queen
+																	// queens
 																	// move and
 																	// remove
 																	// checker

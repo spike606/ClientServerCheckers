@@ -36,7 +36,7 @@ public class Match {
 
 		private MessageFromClient messageFromClient = new MessageFromClient();
 		private MessageFromServer messageToClient = new MessageFromServer();
-		private volatile boolean threadRunning = true;//flag to kill thread 
+		private volatile boolean threadRunning = true;// flag to kill thread
 
 		public boolean resign = false;// used when out or pressed stop
 
@@ -65,13 +65,13 @@ public class Match {
 				if (resign != true) {
 					try {
 
-						// wiadomosci incijujace do klientow
+						// initial message
 						prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 								gameFlow.getChosenRow(), true, gameFlow.getCurrentPlayer(), gameFlow.getPossibleMoves(),
 								GameData.EMPTY, myColor);
 						myOutput.writeObject(messageToClient);
 
-						while (true && threadRunning) {
+						while (true && threadRunning) {// TODO:??
 							if (gameFlow.getCurrentPlayer() == myColor && gameFlow.isGameRunning()) {
 
 								prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
@@ -80,37 +80,28 @@ public class Match {
 								myOutput.reset();
 								myOutput.writeObject(messageToClient);
 
-								// odebranie klikniecia od klienta
-								try {
-									messageFromClient = (MessageFromClient) myInput.readObject();
-								} catch (ClassNotFoundException e) {
-									e.printStackTrace();
-								}
+								// receive message from client
+								messageFromClient = (MessageFromClient) myInput.readObject();
 
-								// przetworznie klikniecia (ewentualnego ruchu,
-								// bicia
-								// itp)
+								// process message from client
 								gameFlow.makeClick(messageFromClient.getChosenRow(), messageFromClient.getChosenCol(),
 										messageFromClient.isResign());
 
-								// przygotowanie odpowiedzi dla klienta i jej
-								// wyslanie
+								// prepare and send answer to client
 								prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 										gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(),
 										gameFlow.getPossibleMoves(), gameFlow.getWinner(), myColor);
 								myOutput.reset();
 								myOutput.writeObject(messageToClient);
 
-							} else if (!gameFlow.isGameRunning() && gameFlow.getWinner() != GameData.EMPTY) {// gdy
-																												// gra
-																												// sie
-																												// konczy
+							} else if (!gameFlow.isGameRunning() && gameFlow.getWinner() != GameData.EMPTY) {// game
+																												// end
 								prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
 										gameFlow.getChosenRow(), gameFlow.isGameRunning(), gameFlow.getCurrentPlayer(),
 										gameFlow.getPossibleMoves(), gameFlow.getWinner(), myColor);
 								myOutput.reset();
 								myOutput.writeObject(messageToClient);
-								threadRunning = false;
+								threadRunning = false;// to kill current thread
 
 							}
 
@@ -124,6 +115,12 @@ public class Match {
 						System.out.println("Player " + getMyColor() + " died. Match number: " + matchNumber);
 						threadRunning = false;
 
+					} catch (ClassNotFoundException e) {
+						resign = true;
+						gameFlow.makeClick(-1, -1, resign);
+						System.out.println("Class not found error. Player " + getMyColor() + " died. Match number: "
+								+ matchNumber);
+						threadRunning = false;
 					}
 				}
 			}
