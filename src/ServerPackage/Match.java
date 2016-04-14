@@ -4,10 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.SocketException;
 
 import CommonPackage.*;
-import ServerPackage.Match.Player;
 
 public class Match {
 
@@ -71,7 +69,7 @@ public class Match {
 								GameData.EMPTY, myColor);
 						myOutput.writeObject(messageToClient);
 
-						while (true && threadRunning) {// TODO:??
+						while (threadRunning) {
 							if (gameFlow.getCurrentPlayer() == myColor && gameFlow.isGameRunning()) {
 
 								prepareMessageToClient(gameFlow.boardData.getBoard(), gameFlow.getChosenCol(),
@@ -150,12 +148,6 @@ public class Match {
 
 		}
 
-		private synchronized String getMyColor() {
-			if (this.myColor == 1)
-				return "WHITE";
-			else
-				return "BLACK";
-		}
 
 	}
 

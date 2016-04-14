@@ -1,7 +1,6 @@
 package ClientPackage;
 
 import CommonPackage.*;
-import ServerPackage.GameData;
 
 /*
  * Class used to manage the game flow, stores game data used on client side

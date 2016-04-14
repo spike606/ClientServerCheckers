@@ -5,11 +5,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
 
 import CommonPackage.*;
-import ServerPackage.GameData;
-import ServerPackage.GameFlow;
+
 
 public class Connecting extends Thread {
 
